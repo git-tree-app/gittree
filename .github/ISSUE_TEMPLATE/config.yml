@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/git-tree-app/gittree/security/advisories/new
+    about: Please report security issues privately, never in a public issue.
+  - name: Account, organizations and invitations
+    url: https://gittree.app/en/dashboard
+    about: Manage your Git Tree account on the website dashboard.
+  - name: Privacy policy
+    url: https://gittree.app/en/privacy
+    about: What the app and your account store, and how to delete it.
