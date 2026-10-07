@@ -13,8 +13,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/eslamfaisal/git-tree/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/eslamfaisal/git-tree?label=latest%20release&style=flat-square&color=4f8cff"></a>
-  <a href="https://github.com/eslamfaisal/git-tree/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/eslamfaisal/git-tree/total?style=flat-square&color=22c55e"></a>
+  <a href="https://github.com/git-tree-app/gittree/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/git-tree-app/gittree?label=latest%20release&style=flat-square&color=4f8cff"></a>
+  <a href="https://github.com/git-tree-app/gittree/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/git-tree-app/gittree/total?style=flat-square&color=22c55e"></a>
   <img alt="macOS 13 or later" src="https://img.shields.io/badge/macOS-13%2B%20%C2%B7%20Apple%20silicon%20%26%20Intel-111827?logo=apple&style=flat-square">
   <img alt="Windows 10 and 11" src="https://img.shields.io/badge/Windows-10%20%C2%B7%2011%20(x64)-0078D6?style=flat-square">
   <img alt="Ubuntu 22.04 or later and Debian 12 or later" src="https://img.shields.io/badge/Linux-Ubuntu%2022.04%2B%20%C2%B7%20Debian%2012%2B%20(x64)-E95420?logo=linux&logoColor=white&style=flat-square">
@@ -33,7 +33,7 @@
   &nbsp;·&nbsp;
   <a href="https://gittree.app/en/features">All features</a>
   &nbsp;·&nbsp;
-  <a href="https://github.com/eslamfaisal/git-tree/issues/new/choose">Report a bug</a>
+  <a href="https://github.com/git-tree-app/gittree/issues/new/choose">Report a bug</a>
   &nbsp;·&nbsp;
   <a href="https://gittree.app/ar">العربية</a>
 </p>
@@ -80,14 +80,14 @@
 | **Linux** | Ubuntu 22.04 LTS or later, Debian 12 or later (and derivatives with WebKitGTK 4.1, such as Linux Mint 21+), 64-bit | Debian package `…_amd64.deb` (recommended) · portable `…_amd64.AppImage` | [**Download the .deb**](https://gittree.app/api/download/linux) · [AppImage](https://gittree.app/api/download/linux-appimage) |
 
 These links always fetch the installer of the **newest release** straight from this repository — there is nothing to pick.
-Every version, with its release notes and checksums, is listed on the [**Releases page**](https://github.com/eslamfaisal/git-tree/releases).
+Every version, with its release notes and checksums, is listed on the [**Releases page**](https://github.com/git-tree-app/gittree/releases).
 You can also download from the website: [gittree.app/en/download](https://gittree.app/en/download).
 
 Prefer to skip the website? These links are served by GitHub itself, never change, and always point to the newest release:
-[`Git-Tree-macOS.dmg`](https://github.com/eslamfaisal/git-tree/releases/latest/download/Git-Tree-macOS.dmg) ·
-[`Git-Tree-Windows-setup.exe`](https://github.com/eslamfaisal/git-tree/releases/latest/download/Git-Tree-Windows-setup.exe) ·
-[`Git-Tree-Linux.deb`](https://github.com/eslamfaisal/git-tree/releases/latest/download/Git-Tree-Linux.deb) ·
-[`Git-Tree-Linux.AppImage`](https://github.com/eslamfaisal/git-tree/releases/latest/download/Git-Tree-Linux.AppImage).
+[`Git-Tree-macOS.dmg`](https://github.com/git-tree-app/gittree/releases/latest/download/Git-Tree-macOS.dmg) ·
+[`Git-Tree-Windows-setup.exe`](https://github.com/git-tree-app/gittree/releases/latest/download/Git-Tree-Windows-setup.exe) ·
+[`Git-Tree-Linux.deb`](https://github.com/git-tree-app/gittree/releases/latest/download/Git-Tree-Linux.deb) ·
+[`Git-Tree-Linux.AppImage`](https://github.com/git-tree-app/gittree/releases/latest/download/Git-Tree-Linux.AppImage).
 
 > [!NOTE]
 > Git Tree uses **your own Git** (version 2.39 or newer). If Git is not installed, the app tells you how to install it — see [Install Git](#install-git). Ubuntu 22.04 ships an older Git, so it needs one extra step there.
@@ -101,8 +101,8 @@ This is the **public home of Git Tree**: its releases, its public files and its 
 
 | You'll find here | |
 |---|---|
-| **Releases** | Installers for macOS (`.dmg`), Windows (`.exe`) and Linux (`.deb`, `.AppImage`), release notes and SHA-256 checksums, on the [Releases page](https://github.com/eslamfaisal/git-tree/releases). |
-| **Issues** | Bug reports and feature requests — [open one](https://github.com/eslamfaisal/git-tree/issues/new/choose). |
+| **Releases** | Installers for macOS (`.dmg`), Windows (`.exe`) and Linux (`.deb`, `.AppImage`), release notes and SHA-256 checksums, on the [Releases page](https://github.com/git-tree-app/gittree/releases). |
+| **Issues** | Bug reports and feature requests — [open one](https://github.com/git-tree-app/gittree/issues/new/choose). |
 | **Public files** | The logo and screenshots used in this README (`.github/assets/`). |
 
 The website, [**gittree.app**](https://gittree.app), downloads from this repository: when a new version is published here, the website's download buttons serve it within minutes.
@@ -131,7 +131,7 @@ Honest, neutral and short: only rows where each answer is known. GitTree's colum
 | **Undo for rebases, resets and discards** | ✅ toolbar Undo and Redo | ✅ | No undo button <!-- VERIFY --> | No undo button <!-- VERIFY --> |
 | **Conflict warning before a merge** | ✅ in the merge dialog | Paid plan <!-- VERIFY --> | ❌ <!-- VERIFY --> | ❌ <!-- VERIFY --> |
 
-<sub>Last checked: 2 October 2026, against the vendors' own sites ([GitKraken](https://www.gitkraken.com/pricing), [Sourcetree](https://www.sourcetreeapp.com), [Fork](https://git-fork.com)). Plans and features change; if a cell is out of date, please [open an issue](https://github.com/eslamfaisal/git-tree/issues/new/choose). GitKraken, Sourcetree and Fork are trademarks of their owners; GitTree is not affiliated with or endorsed by them.</sub>
+<sub>Last checked: 2 October 2026, against the vendors' own sites ([GitKraken](https://www.gitkraken.com/pricing), [Sourcetree](https://www.sourcetreeapp.com), [Fork](https://git-fork.com)). Plans and features change; if a cell is out of date, please [open an issue](https://github.com/git-tree-app/gittree/issues/new/choose). GitKraken, Sourcetree and Fork are trademarks of their owners; GitTree is not affiliated with or endorsed by them.</sub>
 
 ## Features
 
@@ -325,7 +325,7 @@ spctl --assess --type execute --verbose "/Applications/Git Tree.app"   # "accept
 Git Tree uses Microsoft Edge **WebView2**, which Windows 11 includes; on Windows 10 the installer sets it up if it is missing.
 
 > [!IMPORTANT]
-> Only install Git Tree from [gittree.app](https://gittree.app) or this repository's [Releases page](https://github.com/eslamfaisal/git-tree/releases). If Windows SmartScreen says *"Windows protected your PC"* for a brand-new release, check the file's checksum (below) before choosing **More info → Run anyway**.
+> Only install Git Tree from [gittree.app](https://gittree.app) or this repository's [Releases page](https://github.com/git-tree-app/gittree/releases). If Windows SmartScreen says *"Windows protected your PC"* for a brand-new release, check the file's checksum (below) before choosing **More info → Run anyway**.
 
 ### Linux (Ubuntu and Debian)
 
@@ -356,7 +356,7 @@ chmod +x Git-Tree_<version>_amd64.AppImage
 Keep the AppImage in a folder only you can write to. If it does not start because FUSE is missing, install it with `sudo apt install fuse3`. An AppImage registers nothing with your system, so after signing in the browser cannot hand you back to the app: choose **Manually enter authentication code** in the app and paste the code the website shows (the `.deb` handles the return automatically).
 
 > [!IMPORTANT]
-> The Linux packages are not signed. Verify the download against `SHA256SUMS.txt` ([Verify your download](#verify-your-download-optional)) and install only from [gittree.app](https://gittree.app) or this repository's [Releases page](https://github.com/eslamfaisal/git-tree/releases).
+> The Linux packages are not signed. Verify the download against `SHA256SUMS.txt` ([Verify your download](#verify-your-download-optional)) and install only from [gittree.app](https://gittree.app) or this repository's [Releases page](https://github.com/git-tree-app/gittree/releases).
 
 ### Install Git
 
@@ -542,7 +542,7 @@ Read the full [Privacy policy](https://gittree.app/en/privacy) and [Terms of use
 - **Windows** runs the installer without questions after the administrator prompt, and reopens Git Tree.
 - **Ubuntu and Debian** ask for your password (the system's administrator prompt) and upgrade the `git-tree` package; an **AppImage** is replaced where it is.
 
-If Git Tree cannot install it for you (no permission to its folder, or you dismissed the prompt), it opens the installer so you can finish by hand. Git Tree waits for running Git operations and asks before closing open terminals; your settings, repositories list and sign-in stay as they are. Turn the launch check off in **Preferences → General → Automatically check for updates**; **Check for Updates…** in the command palette still works. You can also always download the newest version from the website or the [Releases page](https://github.com/eslamfaisal/git-tree/releases/latest) and install it over the current one (on Ubuntu and Debian, `sudo apt install ./Git-Tree_<version>_amd64.deb`; with the AppImage, replace the file). Watch this repository (**Watch → Custom → Releases**) to be told about each new version.
+If Git Tree cannot install it for you (no permission to its folder, or you dismissed the prompt), it opens the installer so you can finish by hand. Git Tree waits for running Git operations and asks before closing open terminals; your settings, repositories list and sign-in stay as they are. Turn the launch check off in **Preferences → General → Automatically check for updates**; **Check for Updates…** in the command palette still works. You can also always download the newest version from the website or the [Releases page](https://github.com/git-tree-app/gittree/releases/latest) and install it over the current one (on Ubuntu and Debian, `sudo apt install ./Git-Tree_<version>_amd64.deb`; with the AppImage, replace the file). Watch this repository (**Watch → Custom → Releases**) to be told about each new version.
 
 **Uninstalling on macOS.** Quit Git Tree and move **Git Tree** from Applications to the Bin. To also remove its settings, caches and logs, delete:
 
@@ -579,8 +579,8 @@ Disconnect your hosting accounts in **Preferences → Integrations** first if yo
 | Windows SmartScreen warning | Check the file's SHA-256 against the release ([Verify your download](#verify-your-download-optional)), then **More info → Run anyway**. |
 | macOS: *"Git Tree can't be opened because Apple cannot check it"* | The release is not notarized yet. Control-click **Git Tree** in Applications → **Open** → **Open** ([Installation](#macos)). |
 | A remote asks for credentials every time | Connect the account in **Preferences → Integrations**, or set up an SSH key there; secrets are kept in your keychain. |
-| Git Tree crashed or closed unexpectedly | Choose **Report on GitHub** in the crash window (or **Crash Reports…** later) to open the [crash report form](https://github.com/eslamfaisal/git-tree/issues/new?template=crash_report.yml). |
-| Something else | [Open an issue](https://github.com/eslamfaisal/git-tree/issues/new/choose) with your Git Tree version (bottom-right of the window), your OS version and the steps to reproduce. |
+| Git Tree crashed or closed unexpectedly | Choose **Report on GitHub** in the crash window (or **Crash Reports…** later) to open the [crash report form](https://github.com/git-tree-app/gittree/issues/new?template=crash_report.yml). |
+| Something else | [Open an issue](https://github.com/git-tree-app/gittree/issues/new/choose) with your Git Tree version (bottom-right of the window), your OS version and the steps to reproduce. |
 
 ## FAQ
 
@@ -640,10 +640,10 @@ No. Git Tree's source code is private; this repository hosts its releases, publi
 
 ## Feedback and support
 
-- 🐞 **Found a bug?** Click the **bug** button at the top right of Git Tree: it opens the [bug report form](https://github.com/eslamfaisal/git-tree/issues/new?template=bug_report.yml) with your Git Tree, system and Git versions filled in. Nothing is sent from the app; you describe the problem and submit it.
-- 💥 **Did Git Tree crash?** In the crash window choose **Report on GitHub**: it copies the report and opens the [crash report form](https://github.com/eslamfaisal/git-tree/issues/new?template=crash_report.yml) here for you to paste it into. Nothing is ever sent from the app itself. Reports from earlier sessions are under **Crash Reports…**; on Linux they are saved in `~/.local/share/com.eslamfaisal.opengittree/logs`. Read the report before you post it.
-- 💡 **Have an idea?** [Request a feature](https://github.com/eslamfaisal/git-tree/issues/new?template=feature_request.yml).
-- 🔒 **Security issue?** Please don't open a public issue. Report it privately through [**Security → Report a vulnerability**](https://github.com/eslamfaisal/git-tree/security/advisories/new).
+- 🐞 **Found a bug?** Click the **bug** button at the top right of Git Tree: it opens the [bug report form](https://github.com/git-tree-app/gittree/issues/new?template=bug_report.yml) with your Git Tree, system and Git versions filled in. Nothing is sent from the app; you describe the problem and submit it.
+- 💥 **Did Git Tree crash?** In the crash window choose **Report on GitHub**: it copies the report and opens the [crash report form](https://github.com/git-tree-app/gittree/issues/new?template=crash_report.yml) here for you to paste it into. Nothing is ever sent from the app itself. Reports from earlier sessions are under **Crash Reports…**; on Linux they are saved in `~/.local/share/com.eslamfaisal.opengittree/logs`. Read the report before you post it.
+- 💡 **Have an idea?** [Request a feature](https://github.com/git-tree-app/gittree/issues/new?template=feature_request.yml).
+- 🔒 **Security issue?** Please don't open a public issue. Report it privately through [**Security → Report a vulnerability**](https://github.com/git-tree-app/gittree/security/advisories/new).
 - ⭐ **Like Git Tree?** Star this repository and share [gittree.app](https://gittree.app).
 
 ## Author
@@ -683,7 +683,7 @@ Git and the Git logo are trademarks of the Software Freedom Conservancy. GitHub,
 - يحتاج التطبيق إلى Git بالإصدار 2.39 أو أحدث مثبتًا على جهازك (في Ubuntu 22.04 أضِف أولًا مستودع Git PPA؛ راجع قسم التثبيت على Linux).
 - الموقع بالعربية: [gittree.app/ar](https://gittree.app/ar) — الميزات: [gittree.app/ar/features](https://gittree.app/ar/features)
 - التحديثات: الإصدارات بعد 1.0.1 تحدّث نفسها. عند فتح التطبيق يتحقق من الإصدارات المنشورة هنا، ويظهر شريط أعلى النافذة عند توفر إصدار أحدث: اضغط **Download** للتنزيل (مع شريط تقدم وفحص SHA-256 للملف)، ثم **Install and restart** للتثبيت وإعادة التشغيل. يمكنك إيقاف الفحص التلقائي من **Preferences → General**.
-- للإبلاغ عن مشكلة: اضغط زر **الحشرة (Bug)** أعلى يمين التطبيق لفتح نموذج البلاغ مع تعبئة إصدار التطبيق والنظام وGit تلقائيًا، أو [افتح Issue](https://github.com/eslamfaisal/git-tree/issues/new/choose) لاقتراح ميزة.
+- للإبلاغ عن مشكلة: اضغط زر **الحشرة (Bug)** أعلى يمين التطبيق لفتح نموذج البلاغ مع تعبئة إصدار التطبيق والنظام وGit تلقائيًا، أو [افتح Issue](https://github.com/git-tree-app/gittree/issues/new/choose) لاقتراح ميزة.
 
 </div>
 

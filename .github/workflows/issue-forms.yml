@@ -1,0 +1,30 @@
+name: issue forms
+
+# The forms name only labels that exist (GitHub drops an unknown one without a
+# word), and keep the field ids the app prefills. Runs when a form changes and
+# when a label is edited or deleted.
+on:
+  push:
+    paths: ['.github/ISSUE_TEMPLATE/**', '.github/labels.txt', '.github/scripts/check-issue-forms.py']
+  pull_request:
+    paths: ['.github/ISSUE_TEMPLATE/**', '.github/labels.txt', '.github/scripts/check-issue-forms.py']
+  label:
+    types: [edited, deleted]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - run: python3 .github/scripts/check-issue-forms.py
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}

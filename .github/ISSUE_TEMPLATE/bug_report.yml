@@ -1,0 +1,64 @@
+name: Bug report
+description: Something in Git Tree doesn't work as expected.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please don't paste tokens, passwords or private repository contents.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open a repository with …
+        2. Right-click …
+        3. See …
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Git Tree version
+      description: Shown at the bottom-right of the window.
+      placeholder: v1.0.0
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS (Apple silicon)
+        - macOS (Intel)
+        - Windows 11
+        - Windows 10
+        - Linux (Ubuntu or Debian)
+        - Linux (other)
+    validations:
+      required: true
+  - type: input
+    id: os-version
+    attributes:
+      label: OS version
+      description: Filled in by the app when it can read it; otherwise type it.
+      placeholder: macOS 15.3 / Windows 11 24H2 / Ubuntu 24.04
+  - type: input
+    id: git-version
+    attributes:
+      label: Git version
+      description: The output of `git --version`.
+      placeholder: git version 2.47.1
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots or logs
+      description: Anything else that helps. Remove secrets and private paths first. If Git Tree crashed, use the Crash report form instead.
