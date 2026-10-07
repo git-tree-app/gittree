@@ -35,6 +35,10 @@
   &nbsp;·&nbsp;
   <a href="https://github.com/git-tree-app/gittree/issues/new/choose">Report a bug</a>
   &nbsp;·&nbsp;
+  <a href="https://www.linkedin.com/company/gittreeapp">LinkedIn</a>
+  &nbsp;·&nbsp;
+  <a href="https://www.facebook.com/gittreeapp/">Facebook</a>
+  &nbsp;·&nbsp;
   <a href="https://gittree.app/ar">العربية</a>
 </p>
 
@@ -645,6 +649,7 @@ No. Git Tree's source code is private; this repository hosts its releases, publi
 - 💡 **Have an idea?** [Request a feature](https://github.com/git-tree-app/gittree/issues/new?template=feature_request.yml).
 - 🔒 **Security issue?** Please don't open a public issue. Report it privately through [**Security → Report a vulnerability**](https://github.com/git-tree-app/gittree/security/advisories/new).
 - ⭐ **Like Git Tree?** Star this repository and share [gittree.app](https://gittree.app).
+- 📣 **Follow Git Tree** on [LinkedIn](https://www.linkedin.com/company/gittreeapp) and [Facebook](https://www.facebook.com/gittreeapp/) for releases and news.
 
 ## Author
 
@@ -683,10 +688,11 @@ Git and the Git logo are trademarks of the Software Freedom Conservancy. GitHub,
 - يحتاج التطبيق إلى Git بالإصدار 2.39 أو أحدث مثبتًا على جهازك (في Ubuntu 22.04 أضِف أولًا مستودع Git PPA؛ راجع قسم التثبيت على Linux).
 - الموقع بالعربية: [gittree.app/ar](https://gittree.app/ar) — الميزات: [gittree.app/ar/features](https://gittree.app/ar/features)
 - التحديثات: الإصدارات بعد 1.0.1 تحدّث نفسها. عند فتح التطبيق يتحقق من الإصدارات المنشورة هنا، ويظهر شريط أعلى النافذة عند توفر إصدار أحدث: اضغط **Download** للتنزيل (مع شريط تقدم وفحص SHA-256 للملف)، ثم **Install and restart** للتثبيت وإعادة التشغيل. يمكنك إيقاف الفحص التلقائي من **Preferences → General**.
+- تابع GitTree على [LinkedIn](https://www.linkedin.com/company/gittreeapp) و[Facebook](https://www.facebook.com/gittreeapp/) لمعرفة الإصدارات والأخبار.
 - للإبلاغ عن مشكلة: اضغط زر **الحشرة (Bug)** أعلى يمين التطبيق لفتح نموذج البلاغ مع تعبئة إصدار التطبيق والنظام وGit تلقائيًا، أو [افتح Issue](https://github.com/git-tree-app/gittree/issues/new/choose) لاقتراح ميزة.
 
 </div>
 
 <p align="center">
-  <sub>Made with care by <a href="https://www.linkedin.com/in/eslam-faisal-b01321312/">Eslam Faisal</a> · <a href="https://gittree.app">gittree.app</a></sub>
+  <sub>Made with care by <a href="https://www.linkedin.com/in/eslam-faisal-b01321312/">Eslam Faisal</a> · <a href="https://gittree.app">gittree.app</a> · <a href="https://www.linkedin.com/company/gittreeapp">LinkedIn</a> · <a href="https://www.facebook.com/gittreeapp/">Facebook</a></sub>
 </p>
