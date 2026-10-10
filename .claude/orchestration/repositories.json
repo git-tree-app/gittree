@@ -1,0 +1,10 @@
+{
+  "repositories": [
+    "git_tree_app",
+    "git-tree-web",
+    "git-tree-backend",
+    "admin_dashboard",
+    "git-tree-course",
+    "gittree"
+  ]
+}
