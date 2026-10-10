@@ -14,6 +14,21 @@ graph refresh, portability and verification.
 
 ## Start working
 
+**Claude Desktop:** open the **Code** tab, choose **Local**, select this workspace
+or one installed repository, and select **Sonnet / Medium** for the coordinator.
+Type your feature request normally. Project `CLAUDE.md` automatically starts the
+workflow; no terminal command or `/orchestrate` prefix is required. Worker profiles
+still choose Opus for complex desktop UX/architecture and Sonnet for ordinary work.
+Use the app's existing Auto permission mode when appropriate; this setup does not
+enable bypass permissions. Restart old sessions after a configuration update.
+
+The model picker controls the main session: selecting Opus there keeps an Opus
+coordinator and does not disable delegation. To work directly, explicitly request
+the direct-work override described in MANUAL_TESTING.md. Desktop may use a worktree;
+the package must be committed on its starting branch to be present in that checkout.
+Runtime task records belong to the active checkout and are intentionally not copied
+into fresh worktrees: resume the original checkout/run to continue saved work.
+
 From **one repository**, start a fresh Claude Code session normally:
 
 ```sh
@@ -93,8 +108,26 @@ python3 .claude/orchestration/taskctl.py review RUN T1 --reviewer gt-reviewer --
 python3 .claude/orchestration/taskctl.py status RUN
 ```
 
-Use `--risk high` on risky tasks; Opus implementation profiles default to high risk.
-High risk requires `gt-risk-reviewer`. Use `--depends T1` for downstream tasks.
+Use `--risk high` on risky tasks; Opus implementation profiles default to high risk
+and need `--route-reason` naming the ROUTING.md rule. High risk requires
+`gt-risk-reviewer`; low risk requires `gt-reviewer`, which can return
+`--verdict escalate` to hand the same submission to Opus. Raise risk explicitly with
+`risk RUN TASK --evidence`. Use `--depends T1` for downstream tasks. Other commands:
+`resubmit RUN TASK --owner --evidence` rebinds a submission after a coordinator
+follow-up without spending a claim; `carry RUN [--task T] --evidence` records a
+reviewer minor as follow-up work (`--close ID` closes it); `--tokens`/`--model` on
+`finish`, `review` and `block` feed `status` → `usage` (tokens by model, Opus share).
+`status` also lists `reservations` (which run owns each checkout) and
+`open_carryovers`. Snapshots (`v2:<content>:<head>:<tracked set>:<files the task created>`) bind
+to working-tree content; when HEAD moves, the committed tree must equal that content
+(index and working tree clean against HEAD, task-created files tracked), so
+committing accepted work keeps admission while committing staged-but-unreviewed
+blobs, partial stagings or `commit -am` without the new files blocks it; a reviewed
+`rm` committed with `commit -a` or `git rm` stays current. Keep one run per program
+across milestones. One `resubmit` per submission; a further change is a CHANGES
+cycle. Runs recorded before the v2 digest report `stale_repositories`: compare the
+checkout with the accepted diffs, then `rebind RUN --repo PATH --evidence` (no active
+tasks) rewrites only legacy-format snapshots; it never accepts new content.
 `--root /absolute/coordinator` before the command selects another ledger location.
 One run has one coordinator; do not have workers manipulate the ledger.
 

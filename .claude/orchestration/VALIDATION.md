@@ -84,3 +84,35 @@ suite covers concurrent ownership, recovery, retry bounds and stale input reject
 
 See [MANUAL_TESTING.md](MANUAL_TESTING.md) for copyable acceptance prompts and
 pause/resume checks. These results do not establish zero defects or release readiness.
+
+## Routing and ledger revision — 2026-10-11
+
+Trigger: ledger audit of the 2026-10-10 billing (7 runs) and CI/CD (11 runs) programs:
+~85% of tasks on Opus implementers, ~95% of reviews on the Opus reviewer, 18 runs for
+two programs because committing accepted work changed the snapshot, four reviews
+refused after cross-session edits, no cost record, carried minors lost in free text.
+
+Changes: content-bound `v2` snapshots with committed-tree check; `--route-reason`
+required for Opus profiles; low-risk tasks reviewed by Sonnet with `escalate`;
+`risk`, `resubmit` (one per submission), `carry`, `rebind` commands; `--tokens`/
+`--model` usage record and `usage.opus_share`, `reservations`, `open_carryovers` in
+`status`; Opus budget rules in ROUTING.md; bounded reviewer reads; Opus implementers
+hand routine remainder to Sonnet.
+
+Evidence: helper suite **85 tests passed** (was 73), including staged-unreviewed,
+partial-staging and `commit -am` (task-created file omitted) commits detected,
+submodule pointer changes, untracking detected, escalate/reservation
+lifecycle, resubmit cap, legacy ledger status and rebind. `claude plugin validate
+.claude` passed. Independent gt-risk-reviewer review: cycle 1 CHANGES (committed-tree
+divergence, submodule pointer, resubmit cap, reviewer escalation list, legacy
+migration) — all addressed; cycle 2 CHANGES (`commit -am` omitting task-created
+files) — addressed with a tracked-set field and per-task created-file list; cycle 3
+CHANGES (reviewed deletions and producer commits after consumer claim refused) —
+addressed by ignoring absent tracked paths and content-only dependency records; cycle 4
+PASS with one low (unbound records forced owner scratch files to be committed);
+fixing it reopened the `commit -am` hole for integration gates — cycle 5 CHANGES —
+fixed by binding gate records to the intersection of covered tasks' baselines;
+cycle 6 PASS. No live multi-model run has yet exercised the new commands; the next
+real task is the runtime check. Install this revision: git_tree_app was skipped at
+install time because the CI/CD session held its reservation; rerun `setup.py install
+--target git_tree_app` after that session checkpoints.

@@ -5,6 +5,12 @@ and their bounded assignment, not this dispatch procedure. Use native Claude Cod
 subagents, no agent teams, nested coordinators, hidden model CLI processes, or
 self-restarting loops. The coordinator is the sole dispatcher and ledger writer.
 
+This workflow is automatic for normal project requests in Claude Desktop's Code
+tab and the CLI. It does not depend on a slash command or a special launch prompt.
+Desktop's selected main-session model may override the project model setting;
+Sonnet medium is the cost-conscious coordinator default. This does not change the
+fixed models in worker profiles. Ordinary questions still get direct answers.
+
 ## Explicit direct-work override
 
 The user may explicitly request direct work by the main session without delegation
@@ -52,11 +58,30 @@ Architecture approval does not mean owner approval for deployment. The coordinat
 turns the result into the task graph; workers do not create tasks for other workers.
 
 Use `python3 .claude/orchestration/taskctl.py --help` for the local ledger interface.
-Initialize one run with goal, selected Git roots and tier. Add small tasks with exact
+Initialize one run with goal, selected Git roots and tier. **One run spans the whole
+program**: milestones are checkpoints inside it, not new runs. The ledger binds
+approvals to working-tree content; when HEAD moves the committed tree must equal
+that content, so committing the accepted diff keeps admission for the next task,
+while a content change, a partially staged commit, a staged-but-unreviewed blob or
+a commit that leaves out a file the task created (`commit -am`) blocks it. Commit
+the whole reviewed tree, never `git add -p` subsets; untracked files that predate
+the claim are the owner's and may stay untracked. Commit accepted producer work
+before claiming its consumer so the consumer binds to the committed contract. Runs created
+before this digest report stale; verify and `rebind` them once (README). Do not open a successor run to escape a
+blocked task or a changed checkout; reconcile and `invalidate` inside the run.
+Add small tasks with exact
 repo, allowed files (in the assignment), dependencies, role and acceptance criteria.
+A task is small enough when one worker can finish it and one reviewer can read its
+diff inside their turn limits: split ADRs by section and features by risk slice
+(ROUTING.md "Opus budget rules") before dispatch, not after two CHANGES cycles.
 Dependencies point to previously created tasks. Work in vertical slices; do not
 split by agent role if that only multiplies handoffs. Planning reports can be kept
 in a checkpoint; they do not require standalone reviewed code tasks.
+Create one ledger task per deliverable, never a second task merely to review it.
+Review is the existing task's `running -> review -> done` transition. Dispatch
+gt-reviewer/gt-risk-reviewer against that same task and record `review RUN TASK`;
+never `add --agent gt-reviewer` or `add --agent gt-risk-reviewer`. Test-manager may
+validate the same claimed task after its implementer exits, before finish-to-review.
 
 For multi-repo changes, settle producer/consumer contract before parallel builds.
 Assign each task one checkout. Make contract fixtures/generation a single-owner
@@ -70,6 +95,14 @@ invalidate the producer and affected dependents, then revalidate within the exis
 retry budget. Same-checkout sequential changes remain supported.
 
 ## 3. Dispatch and ownership
+
+Before the first claim in a checkout, read `taskctl.py status RUN` → `reservations`.
+A reservation held by another run or coordinator root means another session owns
+that checkout: do not edit it, do not start a parallel run in it, and do not
+`recover` it unless the owner confirms that session's workers stopped. **One
+coordinator session per checkout.** The 2026-10-10 billing/ads collision (two
+sessions editing `git-tree-web`, one committing under the other's reservation)
+cost four refused reviews; the reservation is the rule, the file is only the record.
 
 Claim a ready task in taskctl BEFORE spawning its worker. Use a unique owner/dispatch
 token, record the returned native agent ID in a checkpoint, and pass this packet:
@@ -117,14 +150,17 @@ completion claims. Capture the exact check command/cwd/result and remaining gaps
 Run the repo's required checks, plus focused meaningful regression tests for behavior
 changes. Do not create tests that mirror a reversible copy/style change.
 
-Record finish-to-review only after the implementation/validation evidence is ready.
-The ledger snapshots Git content. Spawn a fresh reviewer with task, acceptance,
-baseline/current diff, exact files, checks and known gaps. Reviewer role/session must
-differ from the implementer. Reviewers have no shell/edit tools; coordinator supplies
-diff artifacts or relevant file paths and test evidence and runs any requested command.
+Record finish-to-review only after the implementation/validation evidence is ready,
+passing `--tokens` and `--model` from the native agent result when shown. The ledger
+snapshots Git content. Spawn a fresh reviewer with task, acceptance, baseline/current
+diff file, exact files, checks and known gaps. Reviewer role/session must differ from
+the implementer. Reviewers have no shell/edit tools; coordinator supplies diff
+artifacts or relevant file paths and test evidence and runs any requested command.
 Do not add Bash to reviewers to pretend they are read-only. Risky work always requires
-gt-risk-reviewer. A risky subtask may not be approved by the Sonnet reviewer merely
-because the implementation was mechanically small.
+gt-risk-reviewer; low-risk work always starts with gt-reviewer, whose ESCALATE verdict
+(`review --verdict escalate`) hands the same submission to gt-risk-reviewer at no retry
+cost. A risky subtask may not be approved by the Sonnet reviewer merely because the
+implementation was mechanically small; that is what ESCALATE is for.
 
 Findings need severity, file:line, concrete impact and reproduction or clearly labeled
 risk. Style preferences are not blockers. On CHANGES, give one consolidated fix packet
@@ -132,6 +168,15 @@ to the original implementer or gt-bug-fixer; reroute deep root causes/desktop fl
 Opus. Re-run affected checks and review the changed surface, not the entire project.
 Changed content invalidates previous review evidence. If unrelated work invalidated
 a snapshot, recapture and review the actual final diff; never fake the old hash.
+A coordinator-applied follow-up before any verdict (a reviewer-suggested one-line
+alias, a lint fix) is recorded with `taskctl.py resubmit RUN TASK --owner TOKEN
+--evidence "..."`, which rebinds the submission without spending a claim, once per
+submission; the reviewer must then read the resubmitted diff. A second change, or
+any change after a CHANGES verdict, is a normal repair cycle. Unrelated external
+edits are never folded in through resubmit; reconcile them and `invalidate`. Reviewer minors accepted as later work
+go to `taskctl.py carry RUN --task TASK --evidence "file:line finding"`, never only
+into free-text evidence; close each with `carry RUN --close ID --evidence` when a
+task fixes it or the owner waives it.
 If an already accepted checkout changes before the next task, admission stops.
 Reconcile the external diff and use `taskctl.py invalidate RUN --repo PATH --evidence
 "reason and changed scope"` with no active workers. This invalidates accepted tasks
@@ -145,6 +190,12 @@ payments, OS variants, signing, updater and deployed behavior need their own evi
 If unavailable, state the missing gate and leave the applicable task blocked/partial.
 For UI, inspect real rendered AR/EN, RTL, keyboard/focus, loading/empty/error states,
 small screens and applicable themes. Fixture screenshots are not native app proof.
+Always run `taskctl.py status RUN` before claiming whole-run completion: it must
+report `complete: true`, no stale repositories and no pending/running/review tasks.
+A finished worker or a native CLI success result alone does not complete the run.
+The milestone/final report lists `open_carryovers` (each becomes a task or an
+explicit owner waiver) and `usage` (tokens by model, `opus_share`) so routing can
+be corrected in the next plan.
 
 Update product ledgers only after acceptance; for desktop keep phase checklist and
 docs/PROGRESS.md consistent and run tooling/check-progress.sh. The orchestration
@@ -156,7 +207,9 @@ and review. Final integration checks run after all participating changes settle.
 
 Every dispatch has maxTurns in its profile. Partial output is never approval. Default
 limits: 3 worker claims per task, 2 requested-changes review cycles; no hidden resets
-of counters. Small run: target <=3 worker calls; standard <=8 per slice; large <=12
+of counters. An exhausted task is a sign the task was too large: the owner-authorized
+continuation must be a smaller follow-up task with the remaining findings as its
+acceptance, not the same assignment again. Small run: target <=3 worker calls; standard <=8 per slice; large <=12
 per milestone. These are admission/checkpoint limits, not hard billing caps. When
 exceeded, stop to summarize progress, remaining work and a concrete next milestone;
 do not manufacture new IDs to bypass a exhausted task's retry limit.

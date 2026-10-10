@@ -48,6 +48,10 @@ Next action: one concrete step, or none
 ```
 
 COMPLETE means your assignment is ready for its next gate, not that the overall
-feature is approved. Reviewers return PASS or CHANGES with evidence and residual
-coverage gaps; they never edit code. Classify speculative concerns separately from
+feature is approved. An Opus implementer that reaches routine work outside its
+risky slice returns PARTIAL with a "Sonnet handoff" list (exact files, acceptance
+checks, contract paths) instead of implementing it. Reviewers return PASS or
+CHANGES with evidence and residual coverage gaps; the Sonnet reviewer may instead
+return ESCALATE with file:line and the ROUTING.md rule when the surface needs Opus.
+Reviewers never edit code and read only the diff, its files, named contracts and tests. Classify speculative concerns separately from
 reproduced bugs. Do not manufacture findings to justify another review round.

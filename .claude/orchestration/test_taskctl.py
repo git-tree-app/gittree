@@ -33,9 +33,13 @@ class LedgerTests(unittest.TestCase):
     def state(self):
         return self.call("status", self.run_id)
 
-    def add(self, key="one", repo=0, depends=(), agent="gt-implementer"):
+    def add(self, key="one", repo=0, depends=(), agent="gt-implementer", **extra):
         args = ["add", self.run_id, "--id", key, "--title", key, "--agent", agent,
                 "--repo", str(self.repos[repo]), "--accept", "Relevant checks pass"]
+        if agent in taskctl.OPUS_AGENTS and "route_reason" not in extra:
+            extra["route_reason"] = "rule 1 risky contract"
+        for name, value in extra.items():
+            args += ["--" + name.replace("_", "-"), value]
         for dependency in depends:
             args += ["--depends", dependency]
         return self.call(*args)
@@ -99,11 +103,9 @@ class LedgerTests(unittest.TestCase):
         self.finish()
         self.rejected(lambda: self.review(owner="worker-1"))
 
-    def test_same_role_cannot_review_itself(self):
-        self.add(agent="gt-reviewer")
-        self.claim()
-        self.finish()
-        self.rejected(self.review)
+    def test_reviewer_is_a_stage_not_a_task(self):
+        self.rejected(lambda: self.add(agent="gt-reviewer"))
+        self.rejected(lambda: self.add(agent="gt-risk-reviewer"))
 
     def test_stale_review_and_recovery(self):
         self.add()
@@ -153,7 +155,8 @@ class LedgerTests(unittest.TestCase):
         subprocess.run(["git", "-C", str(repo), "update-index", "--add", "--cacheinfo",
                         f"160000,{head},vendor"], check=True)
         (repo / "vendor").mkdir()
-        self.assertEqual(64, len(taskctl.snapshot(str(repo))))
+        self.assertEqual(64, len(taskctl.content_digest(str(repo))))
+        self.assertTrue(taskctl.snapshot(str(repo)).startswith("v2:"))
 
     def test_review_cycle_budget(self):
         self.add()
@@ -202,7 +205,243 @@ class LedgerTests(unittest.TestCase):
 
     def test_opus_task_cannot_downgrade_review_risk(self):
         self.rejected(lambda: self.call("add", self.run_id, "--id", "one", "--title", "Desktop flow",
-            "--agent", "gt-desktop", "--repo", str(self.repos[0]), "--risk", "low", "--accept", "Flow works"))
+            "--agent", "gt-desktop", "--repo", str(self.repos[0]), "--risk", "low", "--accept", "Flow works",
+            "--route-reason", "rule 2"))
+
+    def test_opus_profile_requires_route_reason_and_low_risk_refuses_opus_review(self):
+        self.rejected(lambda: self.call("add", self.run_id, "--id", "one", "--title", "Desktop flow",
+            "--agent", "gt-desktop", "--repo", str(self.repos[0]), "--accept", "Flow works"))
+        self.rejected(lambda: self.add(agent="gt-architect", route_reason="  "))
+        self.add(agent="gt-architect")
+        self.assertEqual("rule 1 risky contract", self.state()["tasks"]["one"]["route_reason"])
+        self.add("routine")
+        self.claim("routine")
+        self.finish("routine")
+        self.rejected(lambda: self.review("routine", reviewer="gt-risk-reviewer"))
+        self.review("routine")
+
+    def test_commit_after_acceptance_keeps_admission(self):
+        self.add()
+        self.add("two", depends=["one"])
+        self.claim()
+        (self.repos[0] / "source.txt").write_text("accepted change\n")
+        self.finish()
+        self.review()
+        subprocess.run(["git", "-C", str(self.repos[0]), "add", "-A"], check=True)
+        subprocess.run(["git", "-C", str(self.repos[0]), "-c", "user.name=T", "-c", "user.email=t@example.invalid",
+                        "commit", "-qm", "Accepted work"], check=True)
+        self.assertEqual([], self.state()["stale_repositories"])
+        self.claim("two")
+        subprocess.run(["git", "-C", str(self.repos[0]), "-c", "user.name=T", "-c", "user.email=t@example.invalid",
+                        "commit", "-q", "--allow-empty", "-m", "Empty"], check=True)
+        self.finish("two")
+        self.review("two")
+        self.assertTrue(self.state()["complete"])
+        subprocess.run(["git", "-C", str(self.repos[0]), "reset", "-q", "--hard", "HEAD~1"], check=True)
+        self.assertTrue(self.state()["complete"])
+        (self.repos[0] / "source.txt").write_text("drift after acceptance\n")
+        self.assertFalse(self.state()["complete"])
+        self.assertEqual([str(self.repos[0])], self.state()["stale_repositories"])
+
+    def git(self, repo, *args):
+        subprocess.run(["git", "-C", str(self.repos[repo]), "-c", "user.name=T", "-c", "user.email=t@example.invalid",
+                        *args], check=True, capture_output=True)
+
+    def test_committing_staged_unreviewed_content_is_detected(self):
+        self.add()
+        self.claim()
+        (self.repos[0] / "source.txt").write_text("accepted change\n")
+        self.finish()
+        self.review()
+        (self.repos[0] / "source.txt").write_text("unreviewed\n")
+        self.git(0, "add", "source.txt")
+        (self.repos[0] / "source.txt").write_text("accepted change\n")
+        self.assertEqual([], self.state()["stale_repositories"])  # nothing committed yet
+        self.git(0, "commit", "-qm", "smuggled")
+        self.assertEqual([str(self.repos[0])], self.state()["stale_repositories"])
+        self.add("two")
+        self.rejected(lambda: self.claim("two"))
+        # A task-created file left out of the commit (`commit -am`) makes the moved HEAD stale;
+        # an untracked file that predates the claim is the owner's and may stay untracked.
+        self.git(0, "reset", "-q", "--hard", "HEAD")
+        (self.repos[0] / "owner-scratch.txt").write_text("pre-existing dirty work\n")
+        self.call("invalidate", self.run_id, "--repo", str(self.repos[0]), "--evidence", "reset fixture")
+        self.claim()
+        (self.repos[0] / "source.txt").write_text("accepted change\n")
+        (self.repos[0] / "other.txt").write_text("also reviewed\n")
+        self.finish()
+        self.review()
+        self.git(0, "commit", "-qam", "partial")
+        self.rejected(lambda: self.claim("two"))  # other.txt was created by the task and is not committed
+        self.git(0, "add", "other.txt")
+        self.git(0, "commit", "-qm", "complete")
+        self.assertTrue((self.repos[0] / "owner-scratch.txt").exists())
+        self.claim("two")
+
+    def test_committed_reviewed_deletion_keeps_admission(self):
+        self.git(0, "commit", "-qm", "Fixture")
+        (self.repos[0] / "keep.txt").write_text("kept\n")
+        self.git(0, "add", "keep.txt")
+        self.git(0, "commit", "-qm", "Second file")
+        self.add()
+        self.add("two", depends=["one"])
+        self.claim()
+        (self.repos[0] / "source.txt").unlink()
+        self.finish()
+        self.review()
+        self.git(0, "commit", "-qam", "delete reviewed file")
+        self.claim("two")
+        self.call("block", self.run_id, "two", "--workers-stopped", "--evidence", "admission checked")
+        (self.repos[0] / "source.txt").write_text("restored without review\n")
+        self.add("three")
+        self.rejected(lambda: self.claim("three"))
+
+    def test_producer_commit_after_consumer_claim_is_not_stale(self):
+        self.git(0, "commit", "-qm", "Fixture")
+        (self.repos[0] / "owner-scratch.txt").write_text("not part of any task\n")
+        self.add("producer")
+        self.claim("producer")
+        (self.repos[0] / "contract.json").write_text("{}\n")
+        self.finish("producer")
+        self.review("producer")
+        self.add("consumer", repo=1, depends=["producer"])
+        self.claim("consumer")
+        self.git(0, "add", "contract.json")
+        self.git(0, "commit", "-qm", "producer committed after consumer claim")
+        self.assertEqual(["owner-scratch.txt"], taskctl.untracked(str(self.repos[0])))
+        self.finish("consumer")
+        self.review("consumer")
+        self.assertTrue(self.state()["complete"])
+
+    def test_integration_gate_requires_task_created_files_committed(self):
+        self.git(0, "commit", "-qm", "Fixture")
+        (self.repos[0] / "owner-scratch.txt").write_text("predates every task\n")
+        self.add()
+        self.claim()
+        (self.repos[0] / "source.txt").write_text("accepted change\n")
+        (self.repos[0] / "new.txt").write_text("created by the task\n")
+        self.finish()
+        self.review()
+        self.call("add", self.run_id, "--id", "gate", "--title", "Final gate", "--agent", "gt-test-manager",
+                  "--repo", str(self.repos[0]), "--accept", "All suites pass", "--integration")
+        self.claim("gate")
+        self.finish("gate")
+        self.review("gate", reviewer="gt-risk-reviewer")
+        self.assertTrue(self.state()["complete"])
+        self.git(0, "commit", "-qam", "drops new.txt")
+        self.assertFalse(self.state()["complete"])
+        self.assertEqual([str(self.repos[0])], self.state()["stale_repositories"])
+        self.git(0, "add", "new.txt")
+        self.git(0, "commit", "-qm", "complete")
+        self.assertTrue(self.state()["complete"])
+        self.assertEqual(["owner-scratch.txt"], taskctl.untracked(str(self.repos[0])))
+
+    def test_submodule_pointer_changes_are_content(self):
+        repo = self.repos[0]
+        self.git(0, "commit", "-qm", "Fixture")
+        first = subprocess.check_output(["git", "-C", str(repo), "rev-parse", "HEAD"]).decode().strip()
+        self.git(0, "commit", "-q", "--allow-empty", "-m", "Second")
+        second = subprocess.check_output(["git", "-C", str(repo), "rev-parse", "HEAD"]).decode().strip()
+        self.git(0, "update-index", "--add", "--cacheinfo", f"160000,{first},vendor")
+        (repo / "vendor").mkdir()
+        before = taskctl.content_digest(str(repo))
+        self.git(0, "update-index", "--add", "--cacheinfo", f"160000,{second},vendor")
+        self.assertNotEqual(before, taskctl.content_digest(str(repo)))
+
+    def test_legacy_snapshot_is_stale_until_rebound(self):
+        self.add()
+        self.claim()
+        self.finish()
+        self.review()
+        state_path = self.root / ".claude" / "task-runs" / self.run_id / "state.json"
+        state = json.loads(state_path.read_text())
+        del state["carryovers"]
+        state["tasks"]["one"]["approval"]["snapshot"] = "f" * 64
+        taskctl.save(state_path, state)
+        status = self.state()
+        self.assertEqual([], status["open_carryovers"])
+        self.assertEqual([str(self.repos[0])], status["stale_repositories"])
+        self.add("two")
+        self.rejected(lambda: self.claim("two"))
+        self.rejected(lambda: self.call("rebind", self.run_id, "--repo", str(self.repos[1]), "--evidence", "x"))
+        self.call("rebind", self.run_id, "--repo", str(self.repos[0]), "--evidence", "Checkout equals accepted diff of one")
+        self.rejected(lambda: self.call("rebind", self.run_id, "--repo", str(self.repos[0]), "--evidence", "twice"))
+        self.assertEqual([], self.state()["stale_repositories"])
+        self.claim("two")
+
+    def test_resubmit_rebinds_review_without_spending_a_claim(self):
+        self.add()
+        self.claim()
+        self.finish()
+        self.rejected(lambda: self.call("resubmit", self.run_id, "one", "--owner", "worker-1", "--evidence", "nothing"))
+        (self.repos[0] / "source.txt").write_text("reviewer-requested one-liner\n")
+        self.rejected(self.review)
+        self.rejected(lambda: self.call("resubmit", self.run_id, "one", "--owner", "other", "--evidence", "x"))
+        self.call("resubmit", self.run_id, "one", "--owner", "worker-1", "--evidence", "alias added; tests rerun")
+        task = self.state()["tasks"]["one"]
+        self.assertEqual(1, task["claims"])
+        self.assertIn("RESUBMIT: alias added", task["evidence"])
+        (self.repos[0] / "source.txt").write_text("second follow-up\n")
+        self.rejected(lambda: self.call("resubmit", self.run_id, "one", "--owner", "worker-1", "--evidence", "again"))
+        self.rejected(self.review)
+        (self.repos[0] / "source.txt").write_text("reviewer-requested one-liner\n")
+        self.review()
+        self.assertEqual("done", self.state()["tasks"]["one"]["status"])
+
+    def test_escalate_hands_submission_to_opus_without_retry_charge(self):
+        self.add()
+        self.claim()
+        self.finish()
+        self.rejected(lambda: self.review(verdict="escalate", reviewer="gt-risk-reviewer"))
+        self.review(verdict="escalate")
+        task = self.state()["tasks"]["one"]
+        self.assertEqual(("review", "high", 0), (task["status"], task["risk"], task["changes"]))
+        self.assertTrue(taskctl.read_reservation(str(self.repos[0])))
+        self.rejected(lambda: self.review(verdict="escalate"))
+        self.rejected(self.review)
+        self.review(reviewer="gt-risk-reviewer", owner="reviewer-2")
+        self.assertEqual("done", self.state()["tasks"]["one"]["status"])
+        self.assertIsNone(taskctl.read_reservation(str(self.repos[0])))
+
+    def test_risk_can_only_be_raised_before_acceptance(self):
+        self.add()
+        self.call("risk", self.run_id, "one", "--evidence", "touches entitlement rules")
+        self.rejected(lambda: self.call("risk", self.run_id, "one", "--evidence", "again"))
+        self.claim()
+        self.finish()
+        self.rejected(self.review)
+        self.review(reviewer="gt-risk-reviewer")
+        self.add("two")
+        self.claim("two")
+        self.finish("two")
+        self.review("two")
+        self.rejected(lambda: self.call("risk", self.run_id, "two", "--evidence", "late"))
+
+    def test_usage_carryovers_and_reservations_in_status(self):
+        self.add()
+        self.add("two", agent="gt-architect")
+        self.claim()
+        self.call("finish", self.run_id, "one", "--owner", "worker-1", "--evidence", "ok", "--tokens", "1200", "--model", "claude-sonnet-4-5")
+        self.assertEqual(self.run_id, self.state()["reservations"][str(self.repos[0])]["run"])
+        self.call("review", self.run_id, "one", "--reviewer", "gt-reviewer", "--owner", "r1", "--verdict", "pass",
+                  "--evidence", "ok", "--tokens", "800")
+        self.claim("two")
+        self.call("finish", self.run_id, "two", "--owner", "worker-1", "--evidence", "ok", "--tokens", "5000")
+        self.call("review", self.run_id, "two", "--reviewer", "gt-risk-reviewer", "--owner", "r2", "--verdict", "pass",
+                  "--evidence", "ok", "--tokens", "3000", "--model", "claude-opus-4-1")
+        usage = self.state()["usage"]
+        self.assertEqual({"sonnet": 2000, "opus": 8000}, usage["by_model"])
+        self.assertEqual(0.8, usage["opus_share"])
+        self.assertEqual(4, usage["dispatches"])
+        self.call("carry", self.run_id, "--task", "two", "--evidence", "minor: tooltip wording")
+        self.call("carry", self.run_id, "--evidence", "runbook gap")
+        self.rejected(lambda: self.call("carry", self.run_id, "--task", "missing", "--evidence", "x"))
+        self.assertEqual(2, len(self.state()["open_carryovers"]))
+        self.call("carry", self.run_id, "--close", "1", "--evidence", "fixed in follow-up task three")
+        self.rejected(lambda: self.call("carry", self.run_id, "--close", "1", "--evidence", "twice"))
+        self.assertEqual([2], [item["id"] for item in self.state()["open_carryovers"]])
+        self.assertIsNone(self.state()["reservations"][str(self.repos[0])])
+        self.assertTrue(self.state()["complete"])
 
     def test_cross_coordinator_root_reservation(self):
         self.add()

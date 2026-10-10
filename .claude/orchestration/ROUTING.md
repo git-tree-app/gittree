@@ -45,6 +45,43 @@ Routing decisions, in priority order:
 6. Scripts that deploy, sign, change permissions, migrate data or orchestrate
    privileged infrastructure go to Opus. Routine local helpers go to Sonnet.
 
+## Opus budget rules
+
+Observed 2026-10-10 (billing + CI/CD programs): ~85% of tasks went to Opus
+implementers and ~95% of reviews to the Opus reviewer because nearly every task
+was tagged high risk and sliced by feature, not by risk. These rules fix that.
+
+1. **Slice by risk, not by feature.** Opus (`gt-architect`/`gt-desktop`) owns the
+   contract/domain/decision slice only: ADR, domain types, transition rules, IPC or
+   API contract, unsafe Rust or Git-touching code, security-sensitive paths. Routes,
+   adapters, DTO wiring, UI copy, tests, fixtures, scripts, docs and backfill tooling
+   under that accepted contract go to Sonnet (`gt-implementer`, `gt-test-manager`,
+   `gt-script-writer`, `gt-doc-writer`) with exact allowed files. An Opus task that
+   would exceed ~300 changed lines must be split before dispatch.
+2. **Every Opus task records `--route-reason`** naming the rule above (1, 2, 4 or 6)
+   that applies. "It is part of the billing feature" is not a reason; "writes the
+   consumption ledger transaction (rule 1 entitlements)" is. The ledger refuses
+   `gt-architect`/`gt-desktop` without one.
+3. **Sonnet reviews first.** `--risk low` (the default for Sonnet profiles) means
+   `gt-reviewer`. The ledger refuses `gt-risk-reviewer` on a low-risk task. When
+   the Sonnet reviewer finds rule-1 territory it returns **ESCALATE** (recorded as
+   `review ... --verdict escalate`): the same submission goes to `gt-risk-reviewer`
+   with no retry charge. The coordinator may also raise risk before dispatch with
+   `taskctl.py risk RUN TASK --evidence "..."`. Risk never goes down.
+4. **One review per submission.** No parallel "Review A + Review B" Opus pairs; a
+   second Opus pass is only for CHANGES follow-up on the changed surface, or when
+   the owner explicitly asks. Reviewers get the diff file, acceptance, check output
+   and the exact contract paths, never "read the repo".
+5. **High risk stays high.** Rule 1 areas, desktop flows, integration gates and any
+   `gt-architect`/`gt-desktop` task keep `gt-risk-reviewer`. Cost savings come from
+   routing routine work to Sonnet, never from downgrading a risky review.
+6. **Record cost.** Pass `--tokens`/`--model` from the native agent result on
+   `finish`, `review` and `block`; `status` reports `usage.opus_share`. Report it at
+   milestone end. A milestone with `opus_share` above ~0.5 and no rule-1 content
+   needs a routing correction in the next plan, not a bigger budget.
+7. **Haiku scouts** replace Sonnet investigators for "where is X / which command"
+   questions; an investigator is for reproducing a bug, not for finding files.
+
 Use fixed profile effort on Claude Code 2.1.284. Do not pass per-call Agent effort
 overrides requiring newer versions. No max-effort defaults. Escalation means a
 better-scoped Opus assignment, not Sonnet repeatedly thinking harder. An explicit
@@ -54,9 +91,11 @@ do not globally raise every worker's effort.
 For small low-risk edits: implementer -> independent reviewer, with focused checks
 in the implementation packet. Skip scouts, planners, separate docs and separate
 validators unless they add evidence. Standard feature: task-builder only if useful,
-implementer -> validator -> reviewer. Large/risky feature: architect -> dependency
-ordered vertical slices -> validator -> risk-reviewer, then documentation and final
-integration gate. These are conditional paths, not a mandatory parade of 12 agents.
+implementer -> validator -> reviewer. Large/risky feature: architect designs the
+contract slice -> Sonnet implements the routine slices under it -> validator ->
+Sonnet review with escalation, Opus review only for the contract slice and rule-1
+surfaces, then documentation and final integration gate. These are conditional
+paths, not a mandatory parade of 12 agents.
 
 Existing desktop agents without `gt-` remain manual compatibility tools. Their old
 fleet-wide high-effort policy does not govern this workflow. Do not use them as an

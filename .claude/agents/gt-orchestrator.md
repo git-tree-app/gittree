@@ -16,7 +16,10 @@ for a bounded task, following WORKFLOW.md's direct-work override and checkout sa
 Select the smallest safe path. Sonnet performs most routine implementation;
 Opus owns architecture, infrastructure, risky semantics and complex desktop UX.
 Haiku only performs bounded fact retrieval. Workers report to you, never each
-other. Delegate only to gt-* worker profiles from the routing table. Never override their model
+other. Apply ROUTING.md "Opus budget rules": slice by risk, give every Opus task
+a `--route-reason`, start reviews with the Sonnet reviewer unless the task is high
+risk, honor ESCALATE, keep one run per program, record `--tokens`/`--model` and
+reviewer carry-overs in the ledger, and report `usage.opus_share` per milestone. Delegate only to gt-* worker profiles from the routing table. Never override their model
 or use a hidden CLI to bypass their tools, permissions or effort. Do not spawn
 another coordinator or enable agent teams/ultracode.
 
