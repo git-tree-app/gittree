@@ -19,9 +19,9 @@ One table, read the same way by the website's download buttons, the in-app updat
 `v1.3.0-beta.1` → `1.3.0-beta.1`). A download or an update takes the **versioned** name, else the **stable** name,
 compared exactly (case and all). **No other file is ever picked**: never an installer for another architecture
 (`…_aarch64.dmg`, `…_x64.dmg`, `…_arm64-setup.exe`, `…_arm64.deb`, `…_aarch64.AppImage`), never a `.msi`, and never a
-`.sig`, `.zsync` or `.tar.gz` beside an installer. When a release has neither name for a platform, that platform is
-explicitly *unavailable* for it: the website sends the visitor to the releases list, the app says there is no
-installer for this computer yet.
+`.sig`, `.zsync` or `.tar.gz` beside an installer (the one exception is the macOS app archive below, which only the
+app reads). When a release has neither name for a platform, that platform is explicitly *unavailable* for it: the
+website sends the visitor to the releases list, the app says there is no installer for this computer yet.
 
 | Platform (install format) | Versioned name | Stable name |
 |---|---|---|
@@ -29,6 +29,11 @@ installer for this computer yet.
 | Windows x64 (NSIS installer) | `Git-Tree_V_x64-setup.exe` | `Git-Tree-Windows-setup.exe` |
 | Linux x86_64 / amd64 (Debian package) | `Git-Tree_V_amd64.deb` | `Git-Tree-Linux.deb` |
 | Linux x86_64 / amd64 (AppImage) | `Git-Tree_V_amd64.AppImage` | `Git-Tree-Linux.AppImage` |
+| macOS in-app update only (the same signed, notarized app, as an archive) | `Git-Tree_V_universal.app.tar.gz` | `Git-Tree-macOS.app.tar.gz` |
+
+The macOS app updates from the archive when the release has one, and unpacks it instead of mounting the `.dmg`
+(mounting is not reliable on macOS 27); without one it still updates from the `.dmg`. The website never offers the
+archive: downloads stay the `.dmg`. A release with the `.dmg` must carry the archive.
 
 Beside each installer: `<installer name>.sig` (its minisign signature, once the updater key exists, below) and one
 `SHA256SUMS.txt` listing every file. The stable-name copy has exactly the bytes of the versioned file.
@@ -46,10 +51,12 @@ Beside each installer: `<installer name>.sig` (its minisign signature, once the 
 | File | What |
 |---|---|
 | `Git-Tree_X.Y.Z_universal.dmg` | the macOS installer (Apple silicon and Intel) |
+| `Git-Tree_X.Y.Z_universal.app.tar.gz` | the same macOS app as an archive, for the in-app updater |
 | `Git-Tree_X.Y.Z_x64-setup.exe` | the Windows installer |
 | `Git-Tree_X.Y.Z_amd64.deb` | the Debian / Ubuntu package (64-bit; Ubuntu 22.04 and later, Debian 12 and later) |
 | `Git-Tree_X.Y.Z_amd64.AppImage` | the portable Linux app (same systems) |
 | `Git-Tree-macOS.dmg` | the same `.dmg` under a name that never changes |
+| `Git-Tree-macOS.app.tar.gz` | the same archive under a name that never changes |
 | `Git-Tree-Windows-setup.exe` | the same installer under a name that never changes |
 | `Git-Tree-Linux.deb` | the same `.deb` under a name that never changes |
 | `Git-Tree-Linux.AppImage` | the same AppImage under a name that never changes |
@@ -61,8 +68,8 @@ contain only this public repository.
 ## Build and publish locally
 
 1. Check out the exact private source commit for the version, run `python3 tooling/check-versions.py vX.Y.Z`, and run the release gate. Keep the signing key outside both repositories.
-2. On macOS, build the universal Developer ID signed and notarized DMG with `tooling/build-signed-macos.sh`. On an Ubuntu 22.04 x86_64 environment, build the `.deb` and AppImage with `pnpm tauri:official build --target x86_64-unknown-linux-gnu --bundles deb,appimage --config src-tauri/tauri.release.conf.json`. Build the Windows x64 NSIS installer on Windows or with Tauri's documented NSIS cross compilation toolchain. Verify each artifact on its platform before publishing.
-3. Put the four Tauri output files in one local folder. From the private source checkout, set `TAURI_SIGNING_PRIVATE_KEY` to the contents of the owner's updater private key and `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` to its password. Run `SIGNED_MACOS=true tooling/publish-release.sh vX.Y.Z <folder> --dry-run`, then run the same command without `--dry-run`. This signs every installer with a detached `.sig`, verifies signatures with the key embedded in the app, checks sizes and checksums, and uploads the complete release directly with `gh`.
+2. On macOS, build the universal Developer ID signed and notarized DMG, and the in-app updater's `.app.tar.gz` of the same app, with `tooling/build-signed-macos.sh`. On an Ubuntu 22.04 x86_64 environment, build the `.deb` and AppImage with `pnpm tauri:official build --target x86_64-unknown-linux-gnu --bundles deb,appimage --config src-tauri/tauri.release.conf.json`. Build the Windows x64 NSIS installer on Windows or with Tauri's documented NSIS cross compilation toolchain. Verify each artifact on its platform before publishing.
+3. Put the four installers and the macOS `.app.tar.gz` in one local folder. From the private source checkout, set `TAURI_SIGNING_PRIVATE_KEY` to the contents of the owner's updater private key and `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` to its password. Run `SIGNED_MACOS=true tooling/publish-release.sh vX.Y.Z <folder> --dry-run`, then run the same command without `--dry-run`. This signs every installer with a detached `.sig`, verifies signatures with the key embedded in the app, checks sizes and checksums, and uploads the complete release directly with `gh`.
 4. Confirm the release is public, stable and complete before changing Firestore. The Linux packages carry detached updater signatures; the `.deb` and AppImage are not OS package signed. Windows Authenticode signing requires a separately configured certificate; report its actual state in the release notes.
 
 ## After publishing
