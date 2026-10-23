@@ -1,1 +1,10 @@
 .code-review-graph/
+
+# Maintainers' local AI tooling: synced into every checkout by the workspace,
+# never published in this public repository.
+.agents/
+.claude/
+.caveman.json
+.mcp.json
+AGENTS.md
+CLAUDE.md
