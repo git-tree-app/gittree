@@ -203,7 +203,7 @@ GitTree covers the commands developers use every day, plus the advanced ones you
 - **Three-way conflict editor**: both sides next to each other and the merged output below; take a side line by line, combine both or edit the result, then mark the file resolved.
 
 <p align="center">
-  <img src=".github/assets/screenshots/conflict.webp" alt="The three-way conflict editor: the two sides of a conflict next to each other with per-line checkboxes, and the merged output below" width="85%">
+  <img src=".github/assets/screenshots/conflict.webp" alt="Merging feature/search into develop stopped on a conflict in api/middleware/rateLimit.ts: the three-way editor shows develop and feature/search side by side with per-line checkboxes, and the merged output below" width="85%">
 </p>
 
 <table>
@@ -254,7 +254,7 @@ GitTree covers the commands developers use every day, plus the advanced ones you
 - **Browse, clone and publish** repositories from your accounts without copying a URL.
 
 <p align="center">
-  <img src=".github/assets/screenshots/pull-request.webp" alt="A pull request opened inside GitTree: its files as a tree, a diff of the changed file, and a review comment being added to a line" width="85%">
+  <img src=".github/assets/screenshots/pull-request.webp" alt="A GitHub pull request opened inside GitTree: its title, passing checks, approvals, reviewers and labels, the description and the conversation, with Edit, Review and Merge" width="85%">
 </p>
 
 <p align="center">
@@ -277,6 +277,11 @@ GitTree covers the commands developers use every day, plus the advanced ones you
 - **See how a repository moves**: commits, lines and files changed over time, a weekly chart and contributors by name.
 - **Worked out on your computer** from the repository's local history: nothing is uploaded.
 - **Honest numbers**: the report says what it leaves out, such as a shallow clone's missing history.
+- **Its own window**: open Insights next to your work, keep earlier reports, and export a report as CSV or JSON.
+
+<p align="center">
+  <img src=".github/assets/screenshots/insights.webp" alt="A Repo Insights report for the nebula repository from June 8 to August 31, 2026: commits, merge commits, lines added and deleted, files changed, active person-days and contributors, counted on this computer with nothing uploaded" width="85%">
+</p>
 
 ### Speed and productivity
 
