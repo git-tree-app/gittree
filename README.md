@@ -26,7 +26,9 @@
 <p align="center">
   <a href="https://gittree.app/api/download/macos"><strong>Download for macOS</strong></a>
   &nbsp;·&nbsp;
-  <a href="https://gittree.app/api/download/windows"><strong>Download for Windows</strong></a>
+  <a href="https://apps.microsoft.com/detail/9pc5d11j0w5j"><strong>Microsoft Store (Windows)</strong></a>
+  &nbsp;·&nbsp;
+  <a href="https://gittree.app/api/download/windows"><strong>Windows EXE</strong></a>
   &nbsp;·&nbsp;
   <a href="https://gittree.app/api/download/linux"><strong>Download for Linux</strong></a>
   <br>
@@ -85,11 +87,13 @@
 | Platform | Requirements | Installer | Download |
 |---|---|---|---|
 | **macOS** | macOS 13 Ventura or later, Apple silicon and Intel | One universal `.dmg`, signed and notarized by Apple | [**Download for macOS**](https://gittree.app/api/download/macos) |
-| **Windows** | Windows 10 (22H2) or Windows 11, 64-bit | x64 installer `…_x64-setup.exe` | [**Download for Windows**](https://gittree.app/api/download/windows) |
+| **Windows** | Windows 10 (22H2) or Windows 11, 64-bit | Microsoft Store edition or direct x64 EXE | [**Microsoft Store (recommended)**](https://apps.microsoft.com/detail/9pc5d11j0w5j) · [Direct EXE](https://gittree.app/api/download/windows) |
 | **Linux** | Ubuntu 22.04 LTS or later, Debian 12 or later and their derivatives, 64-bit (x86_64) | Debian package `…_amd64.deb` (recommended) | [**Download the .deb**](https://gittree.app/api/download/linux) |
 | **Linux, other distributions** | 64-bit (x86_64) with glibc 2.35 or newer | Portable `…_amd64.AppImage` | [**Download the AppImage**](https://gittree.app/api/download/linux-appimage) |
 
-The download links always serve the installer of the **newest stable release** from this repository. Every version, with its release notes and checksums, is on the [**Releases page**](https://github.com/git-tree-app/gittree/releases), and the website has a download page too: [gittree.app/en/download](https://gittree.app/en/download).
+The direct download links fetch the installers of the **newest GitHub release**. Microsoft Store distributes and updates its own edition; Store and GitHub releases may become available at different times.
+Every version, with its release notes and checksums, is listed on the [**Releases page**](https://github.com/git-tree-app/gittree/releases).
+You can also download from the website: [gittree.app/en/download](https://gittree.app/en/download).
 
 Prefer links served by GitHub itself? These names never change and always point to the newest release:
 [`Git-Tree-macOS.dmg`](https://github.com/git-tree-app/gittree/releases/latest/download/Git-Tree-macOS.dmg) ·
@@ -359,14 +363,18 @@ spctl --assess --type execute --verbose "/Applications/Git Tree.app"   # "accept
 
 ### Windows
 
-1. [Download the installer](https://gittree.app/api/download/windows): `Git-Tree_<version>_x64-setup.exe`.
-2. Run it. GitTree installs for all users on the computer, so Windows asks for administrator permission.
+**Recommended:** [Get GitTree from Microsoft Store](https://apps.microsoft.com/detail/9pc5d11j0w5j). Microsoft signs the Store edition and manages its updates. After installation, open Git Tree from Start.
+
+**Optional direct EXE:**
+
+1. [Download the installer](https://gittree.app/api/download/windows) — `Git-Tree_<version>_x64-setup.exe`.
+2. Run it. Git Tree installs for all users on the computer, so Windows asks for administrator permission.
 3. Open **Git Tree** from the Start menu.
 
 GitTree uses Microsoft Edge **WebView2**, which Windows 11 includes; on Windows 10 the installer sets it up if it is missing.
 
 > [!IMPORTANT]
-> The Windows installer is not code-signed yet, so Windows SmartScreen may say *"Windows protected your PC"*. Install GitTree only from [gittree.app](https://gittree.app) or this repository's [Releases page](https://github.com/git-tree-app/gittree/releases), check the file's checksum ([Verify your download](#verify-your-download-optional)), then choose **More info → Run anyway**.
+> The direct EXE is currently unsigned and Windows may show a security warning. If Windows blocks it, use the official Microsoft Store edition or ask your IT administrator. Store certification applies only to the Store edition. A SHA-256 checksum checks file integrity; it does not verify the publisher.
 
 ### Linux (Ubuntu and Debian)
 

@@ -12,6 +12,8 @@ This checklist keeps the website's download buttons and the README's links worki
 | If GitHub's API cannot be asked (rate limit, outage) | the same buttons | They redirect to GitHub's permanent link below instead, so a download still starts. |
 | Permanent links, no website needed | `https://github.com/git-tree-app/gittree/releases/latest/download/Git-Tree-macOS.dmg` · `…/Git-Tree-Windows-setup.exe` · `…/Git-Tree-Linux.deb` · `…/Git-Tree-Linux.AppImage` | GitHub redirects `latest/download/<name>` to the file of that name on the **latest release**. The names never change, so these links never break. |
 
+Windows also has a separate [Microsoft Store edition](https://apps.microsoft.com/detail/9pc5d11j0w5j), signed and updated through Microsoft Store. Its MSIX is submitted through Partner Center and is not a GitHub installer asset. Store certification does not sign the direct EXE. Keep both download choices and their signing status clear when publishing.
+
 ## Release asset contract (binding)
 
 One table, read the same way by the website's download buttons, the in-app updater and the release gate
