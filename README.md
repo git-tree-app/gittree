@@ -603,7 +603,9 @@ Read the full [Privacy policy](https://gittree.app/en/privacy) and [Terms of use
 
 ## Updating and uninstalling
 
-**Updating.** GitTree updates itself. At launch it checks this repository's releases, and when a newer version exists a bar at the top of the window offers it with its release notes. Click **Download** to fetch it (GitTree checks the file's signature and SHA-256 before anything is installed), then **Install and restart**:
+**Microsoft Store updates.** The Store edition is updated through Microsoft Store. The GitHub updater described below applies to direct downloads.
+
+**Direct-download updates.** GitTree updates itself. At launch it checks this repository's releases, and when a newer version exists a bar at the top of the window offers it with its release notes. Click **Download** to fetch it (GitTree checks the file's signature and SHA-256 before anything is installed), then **Install and restart**:
 
 - **macOS** replaces the app in Applications and reopens it.
 - **Windows** runs the installer after the administrator prompt and reopens GitTree.
@@ -642,7 +644,7 @@ If GitTree cannot install it for you, it opens the installer so you can finish b
 | Linux: the file watcher reports a limit | Your system's inotify limit is reached. The message shows the exact `sysctl` setting to raise. |
 | Linux: the AppImage doesn't start | Install FUSE (`sudo apt install fuse3`) and keep the file in a folder only you can write to. |
 | The download button opens the Releases page instead of downloading | No installer for your platform is published yet, or GitHub couldn't be reached: pick the file from the release's **Assets** list. |
-| Windows SmartScreen warning | Check the file's SHA-256 against the release ([Verify your download](#verify-your-download-optional)), then **More info → Run anyway**. |
+| Windows SmartScreen warning | The direct EXE is unsigned. Use the [Microsoft Store edition](https://apps.microsoft.com/detail/9pc5d11j0w5j) or ask your IT administrator. A checksum verifies integrity, not the publisher. |
 | A remote asks for credentials every time | Set up an SSH key in **Preferences**, or connect the account in **Preferences → Integrations** (Pro); secrets are kept in your keychain. |
 | A Pro feature is locked | It shows that it is part of GitTree Pro where you would use it; see [Plans](#plans) and the [Pricing page](https://gittree.app/en/pricing). |
 | GitTree crashed or closed unexpectedly | Open **Crash Reports…** from the command palette, read the saved report, and post it with the [crash report form](https://github.com/git-tree-app/gittree/issues/new?template=crash_report.yml). |
@@ -740,12 +742,12 @@ Git and the Git logo are trademarks of the Software Freedom Conservancy. GitHub,
 
 - **الخطة المجانية** تشمل كل ميزات Git المحلية، للمستودعات الخاصة والاستخدام التجاري. **GitTree Pro** يضيف طلبات الدمج والمشكلات وتشغيلات CI/CD من GitHub وGitLab وBitbucket وAzure DevOps، ونور مساعد الذكاء الاصطناعي، وRepo Insights، وإنشاء المؤسسات. الأسعار والعروض في [صفحة الأسعار](https://gittree.app/ar/pricing).
 - **تنزيل لنظام macOS** (macOS 13 أو أحدث، معالجات Apple وIntel): [gittree.app/api/download/macos](https://gittree.app/api/download/macos)
-- **تنزيل لنظام Windows** (Windows 10 ‏22H2 أو Windows 11، ‏64 بت): [gittree.app/api/download/windows](https://gittree.app/api/download/windows)
+- **تنزيل لنظام Windows** (Windows 10 ‏22H2 أو Windows 11، ‏64 بت): [Microsoft Store — الخيار الموصى به](https://apps.microsoft.com/detail/9pc5d11j0w5j)، أو [ملف EXE اختياري](https://gittree.app/api/download/windows). ملف EXE غير موقّع رقميًا وقد يعرض Windows تحذيرًا أمنيًا؛ اعتماد المتجر يخص نسخة المتجر فقط.
 - **تنزيل لنظام Linux** (Ubuntu 22.04 أو أحدث، أو Debian 12 أو أحدث، ‏64 بت x86_64): حزمة `.deb` من [gittree.app/api/download/linux](https://gittree.app/api/download/linux) أو ملف AppImage المحمول من [gittree.app/api/download/linux-appimage](https://gittree.app/api/download/linux-appimage)
 - يحتاج التطبيق إلى Git بالإصدار 2.39 أو أحدث مثبتًا على جهازك (في Ubuntu 22.04 أضِف أولًا مستودع Git PPA؛ راجع قسم التثبيت على Linux).
 - يطلب التطبيق تسجيل الدخول بحساب GitTree مجاني، بالبريد الإلكتروني أو بمزوّد Git.
 - الموقع بالعربية: [gittree.app/ar](https://gittree.app/ar) · الميزات: [gittree.app/ar/features](https://gittree.app/ar/features)
-- التحديثات: يحدّث التطبيق نفسه. عند فتحه يتحقق من الإصدارات المنشورة هنا، ويظهر شريط أعلى النافذة عند توفر إصدار أحدث: اضغط **Download** للتنزيل (مع التحقق من التوقيع وSHA-256)، ثم **Install and restart**.
+- التحديثات: نسخة المتجر تتحدّث عبر Microsoft Store. أما نسخة التحميل المباشر فيحدّثها التطبيق نفسه. عند فتحه يتحقق من الإصدارات المنشورة هنا، ويظهر شريط أعلى النافذة عند توفر إصدار أحدث: اضغط **Download** للتنزيل (مع التحقق من التوقيع وSHA-256)، ثم **Install and restart**.
 - للإبلاغ عن مشكلة: اختر **Report a Bug** في التطبيق لفتح تذكرة دعم على gittree.app، أو [افتح Issue](https://github.com/git-tree-app/gittree/issues/new/choose).
 - GitTree من تطوير شركة [Kodmora](https://kodmora.com) في القاهرة، مصر. الكود المصدري خاص وغير منشور.
 
