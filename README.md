@@ -716,7 +716,8 @@ No. GitTree is closed-source software. This repository hosts its releases, publi
 
 - 🐞 **Found a bug?** Choose **Report a Bug** in GitTree: it opens a support ticket on gittree.app with your GitTree version, platform and OS filled in. Nothing is sent from the app; you describe the problem and submit it. You can also use the [bug report form](https://github.com/git-tree-app/gittree/issues/new?template=bug_report.yml) here.
 - 💥 **Did GitTree crash?** Reports are saved on your computer and nothing is sent. Open **Crash Reports…**, read the report, and post it with the [crash report form](https://github.com/git-tree-app/gittree/issues/new?template=crash_report.yml).
-- 💡 **Have an idea?** [Request a feature](https://github.com/git-tree-app/gittree/issues/new?template=feature_request.yml).
+- 💡 **Have an idea?** [Request a feature](https://github.com/git-tree-app/gittree/issues/new?template=feature_request.yml), or share it in [Discussions › Ideas](https://github.com/git-tree-app/gittree/discussions/categories/ideas) where others can vote. See what we are considering in the [roadmap](ROADMAP.md).
+- 🙋 **Have a question?** Ask in [Discussions › Q&A](https://github.com/git-tree-app/gittree/discussions/categories/q-a), and help others there. How to take part: [CONTRIBUTING.md](CONTRIBUTING.md).
 - 💬 **Account, plan or billing question?** [Open a support ticket](https://gittree.app/en/support) or e-mail [info@gittree.app](mailto:info@gittree.app).
 - 🔒 **Security issue?** Please don't open a public issue. Report it privately through [**Security → Report a vulnerability**](https://github.com/git-tree-app/gittree/security/advisories/new).
 - ⭐ **Like GitTree?** Star this repository and share [gittree.app](https://gittree.app).
@@ -749,6 +750,7 @@ Git and the Git logo are trademarks of the Software Freedom Conservancy. GitHub,
 - الموقع بالعربية: [gittree.app/ar](https://gittree.app/ar) · الميزات: [gittree.app/ar/features](https://gittree.app/ar/features)
 - التحديثات: نسخة المتجر تتحدّث عبر Microsoft Store. أما نسخة التحميل المباشر فيحدّثها التطبيق نفسه. عند فتحه يتحقق من الإصدارات المنشورة هنا، ويظهر شريط أعلى النافذة عند توفر إصدار أحدث: اضغط **Download** للتنزيل (مع التحقق من التوقيع وSHA-256)، ثم **Install and restart**.
 - للإبلاغ عن مشكلة: اختر **Report a Bug** في التطبيق لفتح تذكرة دعم على gittree.app، أو [افتح Issue](https://github.com/git-tree-app/gittree/issues/new/choose).
+- للأسئلة والأفكار: اسأل في [Discussions › Q&A](https://github.com/git-tree-app/gittree/discussions/categories/q-a)، أو شارك فكرتك وصوّت على أفكار غيرك في [Discussions › Ideas](https://github.com/git-tree-app/gittree/discussions/categories/ideas). الكتابة بالعربية مرحَّب بها.
 - GitTree من تطوير شركة [Kodmora](https://kodmora.com) في القاهرة، مصر. الكود المصدري خاص وغير منشور.
 
 </div>

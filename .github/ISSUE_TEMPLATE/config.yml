@@ -1,5 +1,14 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Ask a question
+    url: https://github.com/git-tree-app/gittree/discussions/categories/q-a
+    about: How to do something in Git Tree. Answers stay searchable for the next person.
+  - name: Share or vote on an idea
+    url: https://github.com/git-tree-app/gittree/discussions/categories/ideas
+    about: Bigger ideas, where others can vote and add their use case.
+  - name: Documentation
+    url: https://gittree.app/en/docs
+    about: Step-by-step guides for every feature.
   - name: Report a security vulnerability
     url: https://github.com/git-tree-app/gittree/security/advisories/new
     about: Please report security issues privately, never in a public issue.

@@ -1,0 +1,27 @@
+title: ''
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ask anything about using GitTree. Mark the reply that solved it as the answer, so the next person finds it.
+        This is public: leave out tokens, passwords and private repository details. For account or billing questions, open a [support ticket](https://gittree.app/en/dashboard/support/new).
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      description: What you want to do, what you tried, and what happened.
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS
+        - Windows
+        - Linux
+  - type: input
+    id: version
+    attributes:
+      label: GitTree version
+      description: Shown in About GitTree.

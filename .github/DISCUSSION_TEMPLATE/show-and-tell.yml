@@ -1,0 +1,13 @@
+title: ''
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Show how you use GitTree: a workflow, a setup, a theme, a team habit, a screenshot of a graph you are proud of untangling.
+        Blur anything private before you post a screenshot.
+  - type: textarea
+    id: story
+    attributes:
+      label: What you want to share
+    validations:
+      required: true

@@ -1,0 +1,19 @@
+title: ''
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share an idea for GitTree. Others can vote with 👍 and add their use case; the most-wanted ideas go on the roadmap.
+        Please search first: if the idea is already here, vote and comment there instead.
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What GitTree should do, and the problem it solves for you.
+    validations:
+      required: true
+  - type: textarea
+    id: who
+    attributes:
+      label: Who would use it, and how often?
+      description: Your role and team size help us weigh it. For example "a team of 6 reviewing pull requests every day".
