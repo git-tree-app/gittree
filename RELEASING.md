@@ -10,6 +10,7 @@ This checklist keeps the website's download buttons and the README's links worki
 |---|---|---|
 | Website and README buttons | `https://gittree.app/api/download/macos` · `…/windows` · `…/linux` (the `.deb`) · `…/linux-appimage` | The site asks GitHub for this repository's published releases, takes the **highest stable version**, and redirects to that release's installer file — a direct download, not the release page. It reuses GitHub's answer for a few minutes, so a new release reaches the buttons within about 10. |
 | If GitHub's API cannot be asked (rate limit, outage) | the same buttons | They redirect to GitHub's permanent link below instead, so a download still starts. |
+| One-line Linux install | `curl -fsSL https://gittree.app/install.sh \| bash` | The site redirects `/install.sh` to `releases/latest/download/install.sh` below; the script asks github.com which release is the latest, downloads that release's `.deb` or AppImage and `SHA256SUMS.txt`, checks the checksum, installs and opens the app. |
 | Permanent links, no website needed | `https://github.com/git-tree-app/gittree/releases/latest/download/Git-Tree-macOS.dmg` · `…/Git-Tree-Windows-setup.exe` · `…/Git-Tree-Linux.deb` · `…/Git-Tree-Linux.AppImage` | GitHub redirects `latest/download/<name>` to the file of that name on the **latest release**. The names never change, so these links never break. |
 
 Windows also has a separate [Microsoft Store edition](https://apps.microsoft.com/detail/9pc5d11j0w5j), signed and updated through Microsoft Store. Its MSIX is submitted through Partner Center and is not a GitHub installer asset. Store certification does not sign the direct EXE. Keep both download choices and their signing status clear when publishing.
@@ -19,7 +20,8 @@ Windows also has a separate [Microsoft Store edition](https://apps.microsoft.com
 One table, read the same way by the website's download buttons, the in-app updater and the release gate
 (`tooling/release-gate.py` in the source repository). `V` is the tag without its `v` (`v1.2.0` → `1.2.0`,
 `v1.3.0-beta.1` → `1.3.0-beta.1`). A download or an update takes the **versioned** name, else the **stable** name,
-compared exactly (case and all). **No other file is ever picked**: never an installer for another architecture
+compared exactly (case and all). `install.sh` is a script, not an installer: neither the website's buttons nor the
+app ever pick it. **No other file is ever picked**: never an installer for another architecture
 (`…_aarch64.dmg`, `…_x64.dmg`, `…_arm64-setup.exe`, `…_arm64.deb`, `…_aarch64.AppImage`), never a `.msi`, and never a
 `.sig`, `.zsync` or `.tar.gz` beside an installer (the one exception is the macOS app archive below, which only the
 app reads). When a release has neither name for a platform, that platform is explicitly *unavailable* for it: the
@@ -62,6 +64,7 @@ Beside each installer: `<installer name>.sig` (its minisign signature, once the 
 | `Git-Tree-Windows-setup.exe` | the same installer under a name that never changes |
 | `Git-Tree-Linux.deb` | the same `.deb` under a name that never changes |
 | `Git-Tree-Linux.AppImage` | the same AppImage under a name that never changes |
+| `install.sh` | the one-line Linux installer, byte for byte `packaging/linux/install.sh` of the source (every release with a Linux installer; the release gate requires it) |
 | `SHA256SUMS.txt` | SHA-256 of every file above |
 
 Never attach source code or anything from the private repositories: GitHub's automatic *Source code* archives

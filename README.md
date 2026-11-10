@@ -88,7 +88,7 @@
 |---|---|---|---|
 | **macOS** | macOS 13 Ventura or later, Apple silicon and Intel | One universal `.dmg`, signed and notarized by Apple | [**Download for macOS**](https://gittree.app/api/download/macos) |
 | **Windows** | Windows 10 (22H2) or Windows 11, 64-bit | Microsoft Store edition or direct x64 EXE | [**Microsoft Store (recommended)**](https://apps.microsoft.com/detail/9pc5d11j0w5j) · [Direct EXE](https://gittree.app/api/download/windows) |
-| **Linux** | Ubuntu 22.04 LTS or later, Debian 12 or later and their derivatives, 64-bit (x86_64) | Debian package `…_amd64.deb` (recommended) | [**Download the .deb**](https://gittree.app/api/download/linux) |
+| **Linux** | Ubuntu 22.04 LTS or later, Debian 12 or later and their derivatives, 64-bit (x86_64) | One command (recommended, [below](#linux-one-command)) or the Debian package `…_amd64.deb` | `curl -fsSL https://gittree.app/install.sh \| bash` · [Download the .deb](https://gittree.app/api/download/linux) |
 | **Linux, other distributions** | 64-bit (x86_64) with glibc 2.35 or newer | Portable `…_amd64.AppImage` | [**Download the AppImage**](https://gittree.app/api/download/linux-appimage) |
 
 The direct download links fetch the installers of the **newest GitHub release**. Microsoft Store distributes and updates its own edition; Store and GitHub releases may become available at different times.
@@ -375,6 +375,22 @@ GitTree uses Microsoft Edge **WebView2**, which Windows 11 includes; on Windows 
 
 > [!IMPORTANT]
 > The direct EXE is currently unsigned and Windows may show a security warning. If Windows blocks it, use the official Microsoft Store edition or ask your IT administrator. Store certification applies only to the Store edition. A SHA-256 checksum checks file integrity; it does not verify the publisher.
+
+### Linux (one command)
+
+Paste this in a terminal. It downloads the newest release from this repository, checks it against the release's `SHA256SUMS.txt`, installs it and opens GitTree:
+
+```bash
+curl -fsSL https://gittree.app/install.sh | bash
+```
+
+No curl (a fresh Ubuntu or Debian desktop)? Use `wget -qO- https://gittree.app/install.sh | bash`.
+
+- **Ubuntu, Debian and derivatives:** it installs the `.deb` with apt (with sudo), so it is managed like any package: remove it with `sudo apt remove git-tree`. On Ubuntu 22.04 and Linux Mint 21, whose Git is older than 2.39, it first adds the [Git PPA](https://launchpad.net/~git-core/+archive/ubuntu/ppa) (skip that with `GITTREE_NO_GIT_PPA=1`).
+- **Other distributions (x86_64, glibc 2.35 or newer):** it installs the AppImage as `~/.local/share/gittree/GitTree.AppImage`, with the `gittree` command in `~/.local/bin` and a menu entry that also takes the browser's sign-in link; Git and FUSE come from your package manager when they are missing. Remove it by deleting `~/.local/share/gittree`, `~/.local/bin/gittree` and `~/.local/share/applications/gittree.desktop`.
+- Options: `curl -fsSL https://gittree.app/install.sh | bash -s -- --appimage` (or `--deb`, `--version X.Y.Z`, `--no-launch`). The script is [`install.sh`](https://github.com/git-tree-app/gittree/releases/latest/download/install.sh) on each release; read it before you run it if you like.
+
+GitTree keeps itself up to date from the app afterwards.
 
 ### Linux (Ubuntu and Debian)
 
@@ -744,6 +760,7 @@ Git and the Git logo are trademarks of the Software Freedom Conservancy. GitHub,
 - **الخطة المجانية** تشمل كل ميزات Git المحلية، للمستودعات الخاصة والاستخدام التجاري. **GitTree Pro** يضيف طلبات الدمج والمشكلات وتشغيلات CI/CD من GitHub وGitLab وBitbucket وAzure DevOps، ونور مساعد الذكاء الاصطناعي، وRepo Insights، وإنشاء المؤسسات. الأسعار والعروض في [صفحة الأسعار](https://gittree.app/ar/pricing).
 - **تنزيل لنظام macOS** (macOS 13 أو أحدث، معالجات Apple وIntel): [gittree.app/api/download/macos](https://gittree.app/api/download/macos)
 - **تنزيل لنظام Windows** (Windows 10 ‏22H2 أو Windows 11، ‏64 بت): [Microsoft Store — الخيار الموصى به](https://apps.microsoft.com/detail/9pc5d11j0w5j)، أو [ملف EXE اختياري](https://gittree.app/api/download/windows). ملف EXE غير موقّع رقميًا وقد يعرض Windows تحذيرًا أمنيًا؛ اعتماد المتجر يخص نسخة المتجر فقط.
+- **التثبيت على Linux بأمر واحد (الطريقة الموصى بها):** الصق `curl -fsSL https://gittree.app/install.sh | bash` في الطرفية (أو `wget -qO- https://gittree.app/install.sh | bash` إن لم يكن curl مثبّتًا). ينزّل الأمر أحدث إصدار ويتحقق منه عبر `SHA256SUMS.txt` ويثبّته ثم يفتح GitTree: حزمة `.deb` على Ubuntu وDebian (ويضيف مستودع Git PPA على Ubuntu 22.04 وLinux Mint 21)، وملف AppImage على التوزيعات الأخرى.
 - **تنزيل لنظام Linux** (Ubuntu 22.04 أو أحدث، أو Debian 12 أو أحدث، ‏64 بت x86_64): حزمة `.deb` من [gittree.app/api/download/linux](https://gittree.app/api/download/linux) أو ملف AppImage المحمول من [gittree.app/api/download/linux-appimage](https://gittree.app/api/download/linux-appimage)
 - يحتاج التطبيق إلى Git بالإصدار 2.39 أو أحدث مثبتًا على جهازك (في Ubuntu 22.04 أضِف أولًا مستودع Git PPA؛ راجع قسم التثبيت على Linux).
 - يطلب التطبيق تسجيل الدخول بحساب GitTree مجاني، بالبريد الإلكتروني أو بمزوّد Git.
