@@ -19,7 +19,7 @@
   <img alt="Windows 10 and 11, 64-bit" src="https://img.shields.io/badge/Windows-10%20%C2%B7%2011%20(x64)-0078D6?style=flat-square">
   <img alt="Linux: Ubuntu 22.04 or later and Debian 12 or later, x86_64" src="https://img.shields.io/badge/Linux-Ubuntu%2022.04%2B%20%C2%B7%20Debian%2012%2B%20(x64)-E95420?logo=linux&logoColor=white&style=flat-square">
   <a href="https://gittree.app/en/pricing"><img alt="Plans: Free and Pro" src="https://img.shields.io/badge/plans-Free%20%C2%B7%20Pro-a855f7?style=flat-square"></a>
-  <img alt="No usage telemetry" src="https://img.shields.io/badge/usage%20telemetry-none-14b8a6?style=flat-square">
+  <img alt="Your code stays local" src="https://img.shields.io/badge/your%20code-stays%20local-14b8a6?style=flat-square">
   <img alt="English and Arabic" src="https://img.shields.io/badge/languages-English%20%C2%B7%20%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9-f59e0b?style=flat-square">
 </p>
 
@@ -64,6 +64,7 @@
 - [Download](#download)
 - [About this repository](#about-this-repository)
 - [Why GitTree](#why-gittree)
+- [Architecture and security guarantees](#architecture-and-security-guarantees)
 - [Plans](#plans)
 - [Features](#features)
 - [Installation](#installation)
@@ -87,7 +88,7 @@
 | Platform | Requirements | Installer | Download |
 |---|---|---|---|
 | **macOS** | macOS 13 Ventura or later, Apple silicon and Intel | One universal `.dmg`, signed and notarized by Apple | [**Download for macOS**](https://gittree.app/api/download/macos) |
-| **Windows** | Windows 10 (22H2) or Windows 11, 64-bit | Microsoft Store edition or direct x64 EXE | [**Microsoft Store (recommended)**](https://apps.microsoft.com/detail/9pc5d11j0w5j) · [Direct EXE](https://gittree.app/api/download/windows) |
+| **Windows** | Windows 10 (22H2) or Windows 11, 64-bit | Microsoft Store edition or direct x64 EXE | [**Microsoft Store (recommended)**](https://apps.microsoft.com/detail/9pc5d11j0w5j) · `winget install --id 9PC5D11J0W5J --source msstore` · [Direct EXE](https://gittree.app/api/download/windows) |
 | **Linux** | Ubuntu 22.04 LTS or later, Debian 12 or later and their derivatives, 64-bit (x86_64) | One command (recommended, [below](#linux-one-command)) or the Debian package `…_amd64.deb` | `curl -fsSL https://gittree.app/install.sh \| bash` · [Download the .deb](https://gittree.app/api/download/linux) |
 | **Linux, other distributions** | 64-bit (x86_64) with glibc 2.35 or newer | Portable `…_amd64.AppImage` | [**Download the AppImage**](https://gittree.app/api/download/linux-appimage) |
 
@@ -121,9 +122,19 @@ The website, [**gittree.app**](https://gittree.app), and the in-app updater both
 - **See your whole repository.** Every branch gets its own colour-coded lane, so merges, releases and feature work read at a glance, even in very large histories.
 - **Every everyday Git action is one click away.** Stage, commit, branch, merge, rebase, stash, pull and push from the graph, the toolbar, a right-click or the command palette. Menus name both branches ("Merge `feature/search` into `develop`"), so you always know which way changes move.
 - **Mistakes are recoverable.** Destructive actions save a snapshot first, and **Undo** and **Redo** in the toolbar reverse them. The merge dialog warns before a merge would conflict. Force-push always uses `--force-with-lease`. Dangerous dialogs focus **Cancel**.
-- **Your own Git, your own machine.** Every command runs through the Git you already have, so the result matches the command line. Repositories never leave your computer, and the app sends no usage telemetry.
+- **Your own Git, your own machine.** Every command runs through the Git you already have, so the result matches the command line. Repositories never leave your computer, and no repository content is ever sent anywhere by GitTree.
 - **The same app on macOS, Windows and Linux.** A small, fast desktop app built with Rust and Tauri that follows each platform's window controls, shortcuts, keychain and file system.
 - **English and Arabic.** The whole app, the website and the docs are available in both, with a full right-to-left layout in Arabic.
+
+## Architecture and security guarantees
+
+| Guarantee | How it works |
+|---|---|
+| **Your system `git`, not libgit2** | Every operation runs the Git installed on your computer (version 2.39 or newer), so your global config, SSH and GPG agents, credential helpers and hooks behave exactly as in the terminal. Every command GitTree runs is listed in the **Activity Log**, where you can inspect or export it. |
+| **Recovery snapshots before risky operations** | Before a reset, rebase, squash, discard or branch delete, GitTree records the previous state under hidden snapshot refs (`refs/ogt/trash/*`). **Undo** and **Redo** in the toolbar reverse the operation, and **Lost & Found** lists commits you can bring back. |
+| **OS keychain only** | Tokens and sessions live only in the macOS Keychain, the Windows Credential Manager or the Linux freedesktop Secret Service (GNOME Keyring, KeePassXC). There is no plaintext fallback: if no keychain is available, nothing is stored and the app tells you what to install or unlock. |
+| **Bring your own AI agent (Nour, Pro)** | Nour runs the coding-agent CLI you already use (for example `claude`, `codex`, `gemini` or `opencode`) on your computer. GitTree's tools reach the agent through a local helper (`ogt-helper mcp`) whose permissions are enforced in Rust, and a snapshot is taken before every turn. GitTree stores no AI key and keeps no copy of your code on its servers. |
+| **No account for local Git** | The Free plan needs no account: every local Git feature works without signing in, for private repositories and commercial use. Your repositories, source code, diffs and SSH keys never leave your computer. Signing in with a free GitTree account is needed only to keep Pro after this computer's trial, and for organizations and referrals; the account service receives only what the sign-in and the plan check need (see [Privacy and security](#privacy-and-security)). |
 
 ## Plans
 
@@ -138,7 +149,7 @@ The website, [**gittree.app**](https://gittree.app), and the in-app updater both
 | **Repo Insights**: commits, lines and files changed over time, worked out on your computer | | ✅ | ✅ |
 | Create organizations, invite members, manage roles and seats | | ✅ | ✅ |
 
-All plans need a free GitTree account to sign in. Pro comes with a free trial that starts only when you choose it, and nothing renews automatically. Current prices and offers for your country are on the [**Pricing page**](https://gittree.app/en/pricing).
+**The Free plan needs no account for local Git.** A new installation also gets a free trial of Pro on that computer without an account. Signing in with a free GitTree account is only needed to start a Pro trial on your account, to keep using Nour or hosting integrations after the computer's trial, or to manage organizations. Nothing renews automatically. Current prices and offers for your country are on the [**Pricing page**](https://gittree.app/en/pricing).
 
 ## Features
 
@@ -365,6 +376,12 @@ spctl --assess --type execute --verbose "/Applications/Git Tree.app"   # "accept
 
 **Recommended:** [Get GitTree from Microsoft Store](https://apps.microsoft.com/detail/9pc5d11j0w5j). Microsoft signs the Store edition and manages its updates. After installation, open Git Tree from Start.
 
+**From the command line:** the same Microsoft-signed Store edition installs with `winget` on Windows 10 and 11, with no SmartScreen warning:
+
+```powershell
+winget install --id 9PC5D11J0W5J --source msstore
+```
+
 **Optional direct EXE:**
 
 1. [Download the installer](https://gittree.app/api/download/windows) — `Git-Tree_<version>_x64-setup.exe`.
@@ -461,9 +478,9 @@ cd ~/Downloads && sha256sum -c --ignore-missing SHA256SUMS.txt
 ## Getting started
 
 1. **Install GitTree** and [Git](#install-git), then open the app.
-2. **Sign in.** Choose **Sign in** (or **Create account**). Your browser opens [gittree.app](https://gittree.app), where you continue with your email or a Git provider and confirm the sign-in. The browser hands you back to the app, which continues by itself.
+2. **Continue without an account, or sign in.** At the first launch choose **Continue with local Git (no account)** to start working at once, or **Sign in** (or **Create account**): your browser opens [gittree.app](https://gittree.app), where you continue with your email or a Git provider and confirm the sign-in. The browser hands you back to the app, which continues by itself. You can sign in later from the account button.
    - Browser didn't come back? The website shows a one-time code: choose **Manually enter authentication code** in the app and paste it.
-   - Signing in never starts a trial. If your account can still start a Pro trial, GitTree offers it once; choose **Start trial** or **Not now**.
+   - Without an account, this computer's Pro trial starts by itself. Signing in never starts an account trial: if your account can still start one, GitTree offers it once; choose **Start trial** or **Not now**.
 3. **Open a repository.** From the start page choose **Open** (a folder on your computer), **Clone** (from a URL or your connected accounts) or **Init** (a new repository). **Scan for Repositories** finds the ones you already have in a folder.
 4. **Find your way around.**
 
@@ -594,7 +611,7 @@ Resets, discards, branch deletions and rebases save a recoverable snapshot befor
 
 ## Your GitTree account
 
-Official GitTree builds ask you to sign in with a free **GitTree account**. You create it on the website with your email or a Git provider, and you manage it there.
+A **GitTree account** is free and optional: local Git needs none. You need one to keep Pro after this computer's trial, for organizations and for referrals. You create it on the website with your email or a Git provider, and you manage it there.
 
 | Page | What you can do |
 |---|---|
@@ -607,7 +624,7 @@ What the account stores, and what it doesn't, is spelled out in the [Privacy pol
 
 ## Privacy and security
 
-- **No usage telemetry.** No analytics, tracking or usage reporting leaves your computer.
+- **Usage analytics you can switch off.** Official builds send which screens and commands are used, with masked session recordings, never repository names, paths, branches, commit messages, file contents or credentials. **Preferences → General → Share usage analytics** turns it off.
 - **Your repositories stay local.** GitTree has no cloud copy of your code. With default settings the app talks only to the Git remotes you fetch from and push to, the hosting accounts you connect, an update check you can switch off, and GitTree's servers for sign-in and for this computer's trial and plan check. For that check the app sends the operating system and its version, the processor architecture, the app version and a hashed device ID.
 - **AI only when you ask.** When you ask Nour something or draft a message with AI, what you send goes to the coding-agent CLI you picked, and only then.
 - **Secrets live only in your OS keychain**: the macOS Keychain, the Windows Credential Manager or the Linux Secret Service (GNOME Keyring, KeePassXC), never in files, logs or URLs.
@@ -660,7 +677,7 @@ If GitTree cannot install it for you, it opens the installer so you can finish b
 | Linux: the file watcher reports a limit | Your system's inotify limit is reached. The message shows the exact `sysctl` setting to raise. |
 | Linux: the AppImage doesn't start | Install FUSE (`sudo apt install fuse3`) and keep the file in a folder only you can write to. |
 | The download button opens the Releases page instead of downloading | No installer for your platform is published yet, or GitHub couldn't be reached: pick the file from the release's **Assets** list. |
-| Windows SmartScreen warning | The direct EXE is unsigned. Use the [Microsoft Store edition](https://apps.microsoft.com/detail/9pc5d11j0w5j) or ask your IT administrator. A checksum verifies integrity, not the publisher. |
+| Windows SmartScreen warning | The direct EXE is unsigned. Use the [Microsoft Store edition](https://apps.microsoft.com/detail/9pc5d11j0w5j) (or `winget install --id 9PC5D11J0W5J --source msstore`) or ask your IT administrator. A checksum verifies integrity, not the publisher. |
 | A remote asks for credentials every time | Set up an SSH key in **Preferences**, or connect the account in **Preferences → Integrations** (Pro); secrets are kept in your keychain. |
 | A Pro feature is locked | It shows that it is part of GitTree Pro where you would use it; see [Plans](#plans) and the [Pricing page](https://gittree.app/en/pricing). |
 | GitTree crashed or closed unexpectedly | Open **Crash Reports…** from the command palette, read the saved report, and post it with the [crash report form](https://github.com/git-tree-app/gittree/issues/new?template=crash_report.yml). |
@@ -681,15 +698,15 @@ The Free plan covers every local Git feature, for private repositories and comme
 </details>
 
 <details>
-<summary><strong>Why do I need to sign in?</strong></summary>
+<summary><strong>Do I need an account?</strong></summary>
 
-Official builds use your GitTree account to know your plan and for organizations. You sign in with your email or a Git provider; your repositories and code never leave your computer.
+No, not for local Git. The Free plan covers every local Git feature without signing in, for private repositories and commercial use. A free GitTree account (your email or a Git provider) is needed only to keep Pro after this computer's trial, and for organizations and referrals. Your repositories and code never leave your computer either way.
 </details>
 
 <details>
 <summary><strong>Does GitTree collect any data?</strong></summary>
 
-There is no usage telemetry and no cloud copy of your code. To check this computer's trial and plan, the app sends the operating system and its version, the processor architecture, the app version and a hashed device ID. Your account stores only what the [Privacy policy](https://gittree.app/en/privacy) lists.
+There is no cloud copy of your code, and repository names, paths, branches, commit messages, file contents and credentials are never collected. To check this computer's trial and plan, the app sends the operating system and its version, the processor architecture, the app version and a hashed device ID. Official builds also send usage analytics and masked session recordings (which screens and commands are used, never repository content), tied to that hashed device ID until you sign in and to your account afterwards; **Preferences → General → Share usage analytics** turns them off. Your account stores only what the [Privacy policy](https://gittree.app/en/privacy) lists.
 </details>
 
 <details>
@@ -760,10 +777,17 @@ Git and the Git logo are trademarks of the Software Freedom Conservancy. GitHub,
 - **الخطة المجانية** تشمل كل ميزات Git المحلية، للمستودعات الخاصة والاستخدام التجاري. **GitTree Pro** يضيف طلبات الدمج والمشكلات وتشغيلات CI/CD من GitHub وGitLab وBitbucket وAzure DevOps، ونور مساعد الذكاء الاصطناعي، وRepo Insights، وإنشاء المؤسسات. الأسعار والعروض في [صفحة الأسعار](https://gittree.app/ar/pricing).
 - **تنزيل لنظام macOS** (macOS 13 أو أحدث، معالجات Apple وIntel): [gittree.app/api/download/macos](https://gittree.app/api/download/macos)
 - **تنزيل لنظام Windows** (Windows 10 ‏22H2 أو Windows 11، ‏64 بت): [Microsoft Store — الخيار الموصى به](https://apps.microsoft.com/detail/9pc5d11j0w5j)، أو [ملف EXE اختياري](https://gittree.app/api/download/windows). ملف EXE غير موقّع رقميًا وقد يعرض Windows تحذيرًا أمنيًا؛ اعتماد المتجر يخص نسخة المتجر فقط.
+- **التثبيت على Windows من سطر الأوامر:** الأمر `winget install --id 9PC5D11J0W5J --source msstore` يثبّت نسخة المتجر نفسها الموقّعة من Microsoft، بدون تحذير SmartScreen.
 - **التثبيت على Linux بأمر واحد (الطريقة الموصى بها):** الصق `curl -fsSL https://gittree.app/install.sh | bash` في الطرفية (أو `wget -qO- https://gittree.app/install.sh | bash` إن لم يكن curl مثبّتًا). ينزّل الأمر أحدث إصدار ويتحقق منه عبر `SHA256SUMS.txt` ويثبّته ثم يفتح GitTree: حزمة `.deb` على Ubuntu وDebian (ويضيف مستودع Git PPA على Ubuntu 22.04 وLinux Mint 21)، وملف AppImage على التوزيعات الأخرى.
 - **تنزيل لنظام Linux** (Ubuntu 22.04 أو أحدث، أو Debian 12 أو أحدث، ‏64 بت x86_64): حزمة `.deb` من [gittree.app/api/download/linux](https://gittree.app/api/download/linux) أو ملف AppImage المحمول من [gittree.app/api/download/linux-appimage](https://gittree.app/api/download/linux-appimage)
 - يحتاج التطبيق إلى Git بالإصدار 2.39 أو أحدث مثبتًا على جهازك (في Ubuntu 22.04 أضِف أولًا مستودع Git PPA؛ راجع قسم التثبيت على Linux).
-- يطلب التطبيق تسجيل الدخول بحساب GitTree مجاني، بالبريد الإلكتروني أو بمزوّد Git.
+- **الخطة المجانية لا تحتاج إلى حساب لاستخدام Git المحلي:** كل ميزات Git المحلية تعمل دون تسجيل الدخول، وتحصل النسخة الجديدة على تجربة Pro مجانية على جهازك دون حساب. تسجيل الدخول بحساب GitTree مجاني (بالبريد الإلكتروني أو بمزوّد Git) مطلوب فقط لبدء تجربة Pro على حسابك، أو للاستمرار في استخدام نور وتكاملات الاستضافة بعد انتهاء تجربة الجهاز، أو لإدارة المؤسسات.
+- **ضمانات البنية والأمان:**
+  - **Git المثبّت على نظامك، وليس libgit2:** كل عملية تستخدم Git الموجود على جهازك (الإصدار 2.39 أو أحدث)، فتعمل إعداداتك ووكلاء SSH وGPG والـ hooks كما في الطرفية، وكل أمر ينفّذه GitTree يظهر في **سجل النشاط (Activity Log)**.
+  - **لقطات استرداد قبل العمليات الخطرة:** قبل reset أو rebase أو squash أو تجاهل التغييرات أو حذف فرع، يحفظ GitTree الحالة السابقة في مراجع مخفية (`refs/ogt/trash/*`)، فيعكس **Undo** و**Redo** العملية، ويعرض **Lost & Found** الإيداعات التي يمكنك استعادتها.
+  - **سلسلة مفاتيح النظام فقط:** الرموز والجلسات تُحفظ في Keychain على macOS أو Credential Manager على Windows أو Secret Service على Linux، بدون أي حفظ كنص صريح.
+  - **وكيل الذكاء الاصطناعي الخاص بك (نور، Pro):** يشغّل نور أداة سطر الأوامر التي تستخدمها (مثل `claude` أو `codex` أو `gemini` أو `opencode`) على جهازك، مع صلاحيات يفرضها Rust ولقطة قبل كل دور، ولا يخزّن GitTree أي مفتاح AI ولا نسخة من الكود على خوادمه.
+  - **حسابك محلي أولًا:** المستودعات والكود والفروقات ومفاتيح SSH لا تغادر جهازك أبدًا.
 - الموقع بالعربية: [gittree.app/ar](https://gittree.app/ar) · الميزات: [gittree.app/ar/features](https://gittree.app/ar/features)
 - التحديثات: نسخة المتجر تتحدّث عبر Microsoft Store. أما نسخة التحميل المباشر فيحدّثها التطبيق نفسه. عند فتحه يتحقق من الإصدارات المنشورة هنا، ويظهر شريط أعلى النافذة عند توفر إصدار أحدث: اضغط **Download** للتنزيل (مع التحقق من التوقيع وSHA-256)، ثم **Install and restart**.
 - للإبلاغ عن مشكلة: اختر **Report a Bug** في التطبيق لفتح تذكرة دعم على gittree.app، أو [افتح Issue](https://github.com/git-tree-app/gittree/issues/new/choose).
