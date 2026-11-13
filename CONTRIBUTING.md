@@ -6,7 +6,7 @@ GitTree is made by [Kodmora](https://kodmora.com). The app's source code is not 
 
 Use the [bug report form](https://github.com/git-tree-app/gittree/issues/new?template=bug_report.yml). Your GitTree version is at the bottom right of the window; `git --version` gives Git's. A good report has the steps, what you expected and what happened.
 
-Issues are public: leave out tokens, passwords, private repository names and company code. For anything private (your account, a payment, a problem you can't describe without private details) choose **Report a Bug** in the app instead: it opens a support ticket on gittree.app that only GitTree's team reads.
+Issues are public: leave out tokens, passwords, private repository names and company code. **Report a Bug** in the app opens this same form with your GitTree version and OS filled in. Questions about your account, organizations or invitations go in the [help form](https://github.com/git-tree-app/gittree/issues/new?template=support_request.yml); something you can't describe without private details, e-mail [info@gittree.app](mailto:info@gittree.app).
 
 If GitTree crashed, open **Crash Reports…** from the command palette, read the saved report and post it with the [crash report form](https://github.com/git-tree-app/gittree/issues/new?template=crash_report.yml). Nothing is sent from the app.
 

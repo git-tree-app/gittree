@@ -35,6 +35,10 @@ PREFILLED = {
         "git-version": "input",
         "crash-id": "input",  # crash-1790690000.txt
     },
+    "support_request.yml": {
+        "version": "input",  # v1.2.3
+        "os-version": "input",
+    },
 }
 
 

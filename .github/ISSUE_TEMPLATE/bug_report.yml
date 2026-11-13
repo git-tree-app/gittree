@@ -24,12 +24,29 @@ body:
         3. See …
     validations:
       required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Where in Git Tree did it happen?
+      options:
+        - Commit graph or history
+        - Staging, commits or diffs
+        - Branches, merge, rebase or conflicts
+        - Push, pull, fetch or remotes
+        - Worktrees, stash or undo
+        - Pull requests, integrations or CI/CD pipelines
+        - Nour (AI assistant) or AI drafting
+        - Repo Insights or Team reports
+        - Sign-in or account
+        - Installing, updating or starting the app
+        - Something else
   - type: input
     id: version
     attributes:
       label: Git Tree version
-      description: Shown at the bottom-right of the window.
-      placeholder: v1.0.0
+      description: Filled in by the app; otherwise shown at the bottom-right of the window.
+      placeholder: v3.1.0
     validations:
       required: true
   - type: dropdown

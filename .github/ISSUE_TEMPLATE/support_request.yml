@@ -1,0 +1,42 @@
+name: Help or account question
+description: Ask for help with Git Tree, your account, organizations or invitations.
+title: "[Help]: "
+labels: [question]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Issues are **public**: everyone can read them. Never paste tokens, passwords, one-time codes, private repository names or company code.
+        How-to questions also fit [Discussions › Q&A](https://github.com/git-tree-app/gittree/discussions/categories/q-a), and the [documentation](https://gittree.app/en/docs) covers every feature.
+  - type: dropdown
+    id: topic
+    attributes:
+      label: Topic
+      options:
+        - Using Git Tree
+        - Signing in or my account
+        - Organizations, invitations or Team reports
+        - Integrations (GitHub, GitLab, Bitbucket, Azure DevOps) or CI/CD pipelines
+        - Installing or updating
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: How can we help?
+      description: What are you trying to do, and what happens instead?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Git Tree version
+      description: Filled in by the app; otherwise shown at the bottom-right of the window.
+      placeholder: v3.1.0
+  - type: input
+    id: os-version
+    attributes:
+      label: OS version
+      description: Filled in by the app when it can read it; otherwise type it.
+      placeholder: macOS 15.3 / Windows 11 24H2 / Ubuntu 24.04
