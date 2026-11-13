@@ -149,7 +149,7 @@ The website, [**gittree.app**](https://gittree.app), and the in-app updater both
 | **Repo Insights**: commits, lines and files changed over time, worked out on your computer | | ✅ | ✅ |
 | Create organizations, invite members, manage roles and seats | | ✅ | ✅ |
 
-**The Free plan needs no account for local Git.** A new installation also gets a free trial of Pro on that computer without an account. Signing in with a free GitTree account is only needed to start a Pro trial on your account, to keep using Nour or hosting integrations after the computer's trial, or to manage organizations. Nothing renews automatically. Current prices and offers for your country are on the [**Pricing page**](https://gittree.app/en/pricing).
+**GitTree is free for everyone right now.** Pro and organization seats carry a 100% discount: every Pro feature is open in the app with no account, no card and no trial, and nothing is charged or renewed. A free GitTree account is only needed to create organizations, invite members and share Team reports. The regular prices and the discount are on the [**Pricing page**](https://gittree.app/en/pricing).
 
 ## Features
 
@@ -480,7 +480,7 @@ cd ~/Downloads && sha256sum -c --ignore-missing SHA256SUMS.txt
 1. **Install GitTree** and [Git](#install-git), then open the app.
 2. **Continue without an account, or sign in.** At the first launch choose **Continue with local Git (no account)** to start working at once, or **Sign in** (or **Create account**): your browser opens [gittree.app](https://gittree.app), where you continue with your email or a Git provider and confirm the sign-in. The browser hands you back to the app, which continues by itself. You can sign in later from the account button.
    - Browser didn't come back? The website shows a one-time code: choose **Manually enter authentication code** in the app and paste it.
-   - Without an account, this computer's Pro trial starts by itself. Signing in never starts an account trial: if your account can still start one, GitTree offers it once; choose **Start trial** or **Not now**.
+   - Every Pro feature is open with or without an account while GitTree is free.
 3. **Open a repository.** From the start page choose **Open** (a folder on your computer), **Clone** (from a URL or your connected accounts) or **Init** (a new repository). **Scan for Repositories** finds the ones you already have in a folder.
 4. **Find your way around.**
 
@@ -611,13 +611,13 @@ Resets, discards, branch deletions and rebases save a recoverable snapshot befor
 
 ## Your GitTree account
 
-A **GitTree account** is free and optional: local Git needs none. You need one to keep Pro after this computer's trial, for organizations and for referrals. You create it on the website with your email or a Git provider, and you manage it there.
+A **GitTree account** is free and optional: local Git and every Pro feature need none. You need one for organizations, invitations and Team reports. You create it on the website with your email or a Git provider, and you manage it there.
 
 | Page | What you can do |
 |---|---|
 | [Dashboard](https://gittree.app/en/dashboard) | Overview, your plan, download links and quick links |
 | [Organizations](https://gittree.app/en/dashboard/organizations) | Create organizations (Pro), invite members by email, GitHub username or link, manage roles and seats, accept invitations |
-| [Support](https://gittree.app/en/dashboard/support) | Open and follow support tickets |
+| [Support](https://gittree.app/en/support) | Help, and the GitHub forms for bugs and questions |
 | [Account settings](https://gittree.app/en/dashboard/settings) | Account type (individual or organization), sign out, **delete your account** |
 
 What the account stores, and what it doesn't, is spelled out in the [Privacy policy](https://gittree.app/en/privacy).
@@ -681,7 +681,7 @@ If GitTree cannot install it for you, it opens the installer so you can finish b
 | A remote asks for credentials every time | Set up an SSH key in **Preferences**, or connect the account in **Preferences → Integrations** (Pro); secrets are kept in your keychain. |
 | A Pro feature is locked | It shows that it is part of GitTree Pro where you would use it; see [Plans](#plans) and the [Pricing page](https://gittree.app/en/pricing). |
 | GitTree crashed or closed unexpectedly | Open **Crash Reports…** from the command palette, read the saved report, and post it with the [crash report form](https://github.com/git-tree-app/gittree/issues/new?template=crash_report.yml). |
-| Something else | Choose **Report a Bug** in the app, or [open a support ticket](https://gittree.app/en/support), with your GitTree version (bottom-right of the window), your OS version and the steps to reproduce. |
+| Something else | Choose **Report a Bug** in the app, or use the [bug report form](https://github.com/git-tree-app/gittree/issues/new?template=bug_report.yml), with your GitTree version (bottom-right of the window), your OS version and the steps to reproduce. |
 
 ## FAQ
 
@@ -694,19 +694,19 @@ A desktop Git client (a Git GUI) for macOS, Windows and Linux. It shows your rep
 <details>
 <summary><strong>Is it free?</strong></summary>
 
-The Free plan covers every local Git feature, for private repositories and commercial use, on macOS, Windows and Linux. GitTree Pro is a paid plan that adds hosting integrations, CI/CD, Nour and AI drafting, Repo Insights and organizations, with a free trial that starts only when you choose it. See the [Pricing page](https://gittree.app/en/pricing).
+The Free plan covers every local Git feature, for private repositories and commercial use, on macOS, Windows and Linux. GitTree Pro adds hosting integrations, CI/CD, Nour and AI drafting, Repo Insights and organizations, and is 100% off right now, so it costs nothing. See the [Pricing page](https://gittree.app/en/pricing).
 </details>
 
 <details>
 <summary><strong>Do I need an account?</strong></summary>
 
-No, not for local Git. The Free plan covers every local Git feature without signing in, for private repositories and commercial use. A free GitTree account (your email or a Git provider) is needed only to keep Pro after this computer's trial, and for organizations and referrals. Your repositories and code never leave your computer either way.
+No, not for local Git. The Free plan covers every local Git feature without signing in, for private repositories and commercial use. Pro features need no account either while GitTree is free. A free GitTree account (your email or a Git provider) is needed only for organizations, invitations and Team reports. Your repositories and code never leave your computer either way.
 </details>
 
 <details>
 <summary><strong>Does GitTree collect any data?</strong></summary>
 
-There is no cloud copy of your code, and repository names, paths, branches, commit messages, file contents and credentials are never collected. To check this computer's trial and plan, the app sends the operating system and its version, the processor architecture, the app version and a hashed device ID. Official builds also send usage analytics and masked session recordings (which screens and commands are used, never repository content), tied to that hashed device ID until you sign in and to your account afterwards; **Preferences → General → Share usage analytics** turns them off. Your account stores only what the [Privacy policy](https://gittree.app/en/privacy) lists.
+There is no cloud copy of your code, and repository names, paths, branches, commit messages, file contents and credentials are never collected. So that hosting integrations work without an account, the app registers the computer with the operating system and its version, the processor architecture, the app version and a hashed device ID. Official builds also send usage analytics and masked session recordings (which screens and commands are used, never repository content), tied to that hashed device ID until you sign in and to your account afterwards; **Preferences → General → Share usage analytics** turns them off. Your account stores only what the [Privacy policy](https://gittree.app/en/privacy) lists.
 </details>
 
 <details>
@@ -747,11 +747,11 @@ No. GitTree is closed-source software. This repository hosts its releases, publi
 
 ## Feedback and support
 
-- 🐞 **Found a bug?** Choose **Report a Bug** in GitTree: it opens a support ticket on gittree.app with your GitTree version, platform and OS filled in. Nothing is sent from the app; you describe the problem and submit it. You can also use the [bug report form](https://github.com/git-tree-app/gittree/issues/new?template=bug_report.yml) here.
+- 🐞 **Found a bug?** Choose **Report a Bug** in GitTree: it opens the [bug report form](https://github.com/git-tree-app/gittree/issues/new?template=bug_report.yml) here with your GitTree version and OS filled in. Nothing is sent from the app; you describe the problem and submit it.
 - 💥 **Did GitTree crash?** Reports are saved on your computer and nothing is sent. Open **Crash Reports…**, read the report, and post it with the [crash report form](https://github.com/git-tree-app/gittree/issues/new?template=crash_report.yml).
 - 💡 **Have an idea?** [Request a feature](https://github.com/git-tree-app/gittree/issues/new?template=feature_request.yml), or share it in [Discussions › Ideas](https://github.com/git-tree-app/gittree/discussions/categories/ideas) where others can vote. See what we are considering in the [roadmap](ROADMAP.md).
 - 🙋 **Have a question?** Ask in [Discussions › Q&A](https://github.com/git-tree-app/gittree/discussions/categories/q-a), and help others there. How to take part: [CONTRIBUTING.md](CONTRIBUTING.md).
-- 💬 **Account, plan or billing question?** [Open a support ticket](https://gittree.app/en/support) or e-mail [info@gittree.app](mailto:info@gittree.app).
+- 💬 **Account or organization question?** Use the [help form](https://github.com/git-tree-app/gittree/issues/new?template=support_request.yml) (**Contact Support** in the app opens it), or e-mail [info@gittree.app](mailto:info@gittree.app) for anything private.
 - 🔒 **Security issue?** Please don't open a public issue. Report it privately through [**Security → Report a vulnerability**](https://github.com/git-tree-app/gittree/security/advisories/new).
 - ⭐ **Like GitTree?** Star this repository and share [gittree.app](https://gittree.app).
 - 📣 **Follow GitTree** on [LinkedIn](https://www.linkedin.com/company/gittreeapp), [Facebook](https://www.facebook.com/gittreeapp/) and [YouTube](https://www.youtube.com/@GitTreeApp) for releases, news and Git lessons.
@@ -781,7 +781,7 @@ Git and the Git logo are trademarks of the Software Freedom Conservancy. GitHub,
 - **التثبيت على Linux بأمر واحد (الطريقة الموصى بها):** الصق `curl -fsSL https://gittree.app/install.sh | bash` في الطرفية (أو `wget -qO- https://gittree.app/install.sh | bash` إن لم يكن curl مثبّتًا). ينزّل الأمر أحدث إصدار ويتحقق منه عبر `SHA256SUMS.txt` ويثبّته ثم يفتح GitTree: حزمة `.deb` على Ubuntu وDebian (ويضيف مستودع Git PPA على Ubuntu 22.04 وLinux Mint 21)، وملف AppImage على التوزيعات الأخرى.
 - **تنزيل لنظام Linux** (Ubuntu 22.04 أو أحدث، أو Debian 12 أو أحدث، ‏64 بت x86_64): حزمة `.deb` من [gittree.app/api/download/linux](https://gittree.app/api/download/linux) أو ملف AppImage المحمول من [gittree.app/api/download/linux-appimage](https://gittree.app/api/download/linux-appimage)
 - يحتاج التطبيق إلى Git بالإصدار 2.39 أو أحدث مثبتًا على جهازك (في Ubuntu 22.04 أضِف أولًا مستودع Git PPA؛ راجع قسم التثبيت على Linux).
-- **الخطة المجانية لا تحتاج إلى حساب لاستخدام Git المحلي:** كل ميزات Git المحلية تعمل دون تسجيل الدخول، وتحصل النسخة الجديدة على تجربة Pro مجانية على جهازك دون حساب. تسجيل الدخول بحساب GitTree مجاني (بالبريد الإلكتروني أو بمزوّد Git) مطلوب فقط لبدء تجربة Pro على حسابك، أو للاستمرار في استخدام نور وتكاملات الاستضافة بعد انتهاء تجربة الجهاز، أو لإدارة المؤسسات.
+- **GitTree مجاني للجميع الآن:** يحمل Pro ومقاعد المؤسسات خصمًا 100٪، فكل ميزات Pro مفتوحة في التطبيق دون حساب ودون بطاقة ودون تجربة، ولا يُخصم أي مبلغ. حساب GitTree المجاني (بالبريد الإلكتروني أو بمزوّد Git) مطلوب فقط لإنشاء المؤسسات ودعوة الأعضاء ومشاركة تقارير الفريق.
 - **ضمانات البنية والأمان:**
   - **Git المثبّت على نظامك، وليس libgit2:** كل عملية تستخدم Git الموجود على جهازك (الإصدار 2.39 أو أحدث)، فتعمل إعداداتك ووكلاء SSH وGPG والـ hooks كما في الطرفية، وكل أمر ينفّذه GitTree يظهر في **سجل النشاط (Activity Log)**.
   - **لقطات استرداد قبل العمليات الخطرة:** قبل reset أو rebase أو squash أو تجاهل التغييرات أو حذف فرع، يحفظ GitTree الحالة السابقة في مراجع مخفية (`refs/ogt/trash/*`)، فيعكس **Undo** و**Redo** العملية، ويعرض **Lost & Found** الإيداعات التي يمكنك استعادتها.
@@ -790,7 +790,7 @@ Git and the Git logo are trademarks of the Software Freedom Conservancy. GitHub,
   - **حسابك محلي أولًا:** المستودعات والكود والفروقات ومفاتيح SSH لا تغادر جهازك أبدًا.
 - الموقع بالعربية: [gittree.app/ar](https://gittree.app/ar) · الميزات: [gittree.app/ar/features](https://gittree.app/ar/features)
 - التحديثات: نسخة المتجر تتحدّث عبر Microsoft Store. أما نسخة التحميل المباشر فيحدّثها التطبيق نفسه. عند فتحه يتحقق من الإصدارات المنشورة هنا، ويظهر شريط أعلى النافذة عند توفر إصدار أحدث: اضغط **Download** للتنزيل (مع التحقق من التوقيع وSHA-256)، ثم **Install and restart**.
-- للإبلاغ عن مشكلة: اختر **Report a Bug** في التطبيق لفتح تذكرة دعم على gittree.app، أو [افتح Issue](https://github.com/git-tree-app/gittree/issues/new/choose).
+- للإبلاغ عن مشكلة: اختر **Report a Bug** في التطبيق لفتح نموذج البلاغ هنا على GitHub، أو [افتح Issue](https://github.com/git-tree-app/gittree/issues/new/choose). وللأسئلة عن الحساب أو المؤسسات استخدم [نموذج المساعدة](https://github.com/git-tree-app/gittree/issues/new?template=support_request.yml).
 - للأسئلة والأفكار: اسأل في [Discussions › Q&A](https://github.com/git-tree-app/gittree/discussions/categories/q-a)، أو شارك فكرتك وصوّت على أفكار غيرك في [Discussions › Ideas](https://github.com/git-tree-app/gittree/discussions/categories/ideas). الكتابة بالعربية مرحَّب بها.
 - GitTree من تطوير شركة [Kodmora](https://kodmora.com) في القاهرة، مصر. الكود المصدري خاص وغير منشور.
 
