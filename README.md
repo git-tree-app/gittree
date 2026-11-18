@@ -7,9 +7,9 @@
 <h1 align="center">GitTree</h1>
 
 <p align="center">
-  <strong>A visual Git client for macOS, Windows and Linux.</strong><br>
-  See every branch in one commit graph, stage single lines, resolve conflicts side by side and undo risky steps.<br>
-  Your repositories stay on your computer. GitTree Pro adds pull requests, CI/CD runs and Nour, the AI assistant.
+  <strong>A free Git GUI for macOS, Windows and Linux.</strong><br>
+  Explore your commit graph, stage individual lines, rebase interactively and resolve merge conflicts.<br>
+  Review pull requests, track CI/CD runs and work with your own coding agent through Nour.
 </p>
 
 <p align="center">
@@ -18,9 +18,9 @@
   <img alt="macOS 13 or later, Apple silicon and Intel" src="https://img.shields.io/badge/macOS-13%2B%20%C2%B7%20Apple%20silicon%20%26%20Intel-111827?logo=apple&style=flat-square">
   <img alt="Windows 10 and 11, 64-bit" src="https://img.shields.io/badge/Windows-10%20%C2%B7%2011%20(x64)-0078D6?style=flat-square">
   <img alt="Linux: Ubuntu 22.04 or later and Debian 12 or later, x86_64" src="https://img.shields.io/badge/Linux-Ubuntu%2022.04%2B%20%C2%B7%20Debian%2012%2B%20(x64)-E95420?logo=linux&logoColor=white&style=flat-square">
-  <a href="https://gittree.app/en/pricing"><img alt="Plans: Free and Pro" src="https://img.shields.io/badge/plans-Free%20%C2%B7%20Pro-a855f7?style=flat-square"></a>
+  <a href="https://gittree.app/en/pricing"><img alt="Free for everyone" src="https://img.shields.io/badge/pricing-Free%20for%20everyone-a855f7?style=flat-square"></a>
   <img alt="Your code stays local" src="https://img.shields.io/badge/your%20code-stays%20local-14b8a6?style=flat-square">
-  <img alt="English and Arabic" src="https://img.shields.io/badge/languages-English%20%C2%B7%20%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9-f59e0b?style=flat-square">
+  <img alt="Available in 10 languages, including Arabic" src="https://img.shields.io/badge/languages-10-f59e0b?style=flat-square">
 </p>
 
 <p align="center">
@@ -42,7 +42,7 @@
   &nbsp;·&nbsp;
   <a href="https://gittree.app/en/tour">2-minute tour</a>
   &nbsp;·&nbsp;
-  <a href="https://gittree.app/en/changelog">What's new</a>
+  <a href="https://github.com/git-tree-app/gittree/releases/latest">What's new</a>
   &nbsp;·&nbsp;
   <a href="https://gittree.app/en/support">Support</a>
   &nbsp;·&nbsp;
@@ -50,11 +50,11 @@
 </p>
 
 <p align="center">
-  <img src=".github/assets/demo.gif" alt="GitTree resolving a merge conflict: merging fix/config-defaults into main warns that the merge will stop with a conflict in src/config.ts; the three-way editor shows both sides and the output, the incoming line is taken, the file is saved and marked resolved, and Continue creates the merge commit" width="100%">
+  <img src=".github/assets/demo.gif" alt="GitTree previews a merge conflict and shows both versions of the file alongside the editable result in its three-way conflict editor" width="100%">
 </p>
 
 <p align="center">
-  <sub>Recorded from the real app, not a mock-up.</sub>
+  <sub>Resolving a merge conflict in GitTree. See more workflows in the <a href="https://gittree.app/en/features">feature demos</a>.</sub>
 </p>
 
 ---
@@ -65,7 +65,8 @@
 - [About this repository](#about-this-repository)
 - [Why GitTree](#why-gittree)
 - [Architecture and security guarantees](#architecture-and-security-guarantees)
-- [Plans](#plans)
+- [Pricing](#pricing)
+- [What's new in GitTree 3](#whats-new-in-gittree-3)
 - [Features](#features)
 - [Installation](#installation)
 - [Getting started](#getting-started)
@@ -115,41 +116,48 @@ This is the **public home of GitTree**: its releases, its public files and its i
 | **Issue forms** | [Bug reports, crash reports and feature requests](https://github.com/git-tree-app/gittree/issues/new/choose). |
 | **Public files** | This README, [`RELEASING.md`](RELEASING.md) (the release asset contract) and the logo, screenshots and demo in `.github/assets/`. |
 
-The website, [**gittree.app**](https://gittree.app), and the in-app updater both read this repository's releases: when a new version is published here, the download buttons and the update bar offer it within minutes.
+The [GitTree website](https://gittree.app) and the in-app updater use this repository's releases. See [Getting help](SUPPORT.md), [Contributing](CONTRIBUTING.md), [Security](SECURITY.md) and the [public roadmap](ROADMAP.md).
 
 ## Why GitTree
 
 - **See your whole repository.** Every branch gets its own colour-coded lane, so merges, releases and feature work read at a glance, even in very large histories.
 - **Every everyday Git action is one click away.** Stage, commit, branch, merge, rebase, stash, pull and push from the graph, the toolbar, a right-click or the command palette. Menus name both branches ("Merge `feature/search` into `develop`"), so you always know which way changes move.
 - **Mistakes are recoverable.** Destructive actions save a snapshot first, and **Undo** and **Redo** in the toolbar reverse them. The merge dialog warns before a merge would conflict. Force-push always uses `--force-with-lease`. Dangerous dialogs focus **Cancel**.
-- **Your own Git, your own machine.** Every command runs through the Git you already have, so the result matches the command line. Repositories never leave your computer, and no repository content is ever sent anywhere by GitTree.
+- **Your own Git, your own machine.** GitTree uses the Git you already have and works on your local checkout. You choose when to sync with a Git remote, connect a hosting provider or share context with a coding agent.
 - **The same app on macOS, Windows and Linux.** A small, fast desktop app built with Rust and Tauri that follows each platform's window controls, shortcuts, keychain and file system.
-- **English and Arabic.** The whole app, the website and the docs are available in both, with a full right-to-left layout in Arabic.
+- **Ten interface languages.** English, Arabic, Japanese, Simplified Chinese, German, Korean, French, Hindi, Spanish and Italian. Arabic uses a right-to-left layout.
 
 ## Architecture and security guarantees
 
 | Guarantee | How it works |
 |---|---|
-| **Your system `git`, not libgit2** | Every operation runs the Git installed on your computer (version 2.39 or newer), so your global config, SSH and GPG agents, credential helpers and hooks behave exactly as in the terminal. Every command GitTree runs is listed in the **Activity Log**, where you can inspect or export it. |
+| **Your system Git** | GitTree runs the Git installed on your computer (version 2.39 or newer). It uses your Git configuration and supports SSH, signing and credential helpers. Inspect or export Git commands from the **Activity Log**. |
 | **Recovery snapshots before risky operations** | Before a reset, rebase, squash, discard or branch delete, GitTree records the previous state under hidden snapshot refs (`refs/ogt/trash/*`). **Undo** and **Redo** in the toolbar reverse the operation, and **Lost & Found** lists commits you can bring back. |
 | **OS keychain only** | Tokens and sessions live only in the macOS Keychain, the Windows Credential Manager or the Linux freedesktop Secret Service (GNOME Keyring, KeePassXC). There is no plaintext fallback: if no keychain is available, nothing is stored and the app tells you what to install or unlock. |
-| **Bring your own AI agent (Nour, Pro)** | Nour runs the coding-agent CLI you already use (for example `claude`, `codex`, `gemini` or `opencode`) on your computer. GitTree's tools reach the agent through a local helper (`ogt-helper mcp`) whose permissions are enforced in Rust, and a snapshot is taken before every turn. GitTree stores no AI key and keeps no copy of your code on its servers. |
-| **No account for local Git** | The Free plan needs no account: every local Git feature works without signing in, for private repositories and commercial use. Your repositories, source code, diffs and SSH keys never leave your computer. Signing in with a free GitTree account is needed only to keep Pro after this computer's trial, and for organizations and referrals; the account service receives only what the sign-in and the plan check need (see [Privacy and security](#privacy-and-security)). |
+| **Bring your own coding agent** | Nour runs your chosen coding-agent CLI on your computer. A local helper enforces GitTree tool permissions, and GitTree creates a recovery snapshot before each agent turn. Your agent's own service terms apply. |
+| **Optional GitTree sign-in** | The desktop client works without a GitTree account. Sign in for shared organization features. Hosting providers and coding agents may require their own sign-ins. |
 
-## Plans
+## Pricing
 
-| | **Free** | **Pro** | **Pro for organizations** |
-|---|---|---|---|
-| Who it's for | Everyone | Individuals | Teams and companies (per seat, at least 3 seats) |
-| Every local Git feature in this README (graph, staging, merge, rebase, conflicts, undo, stash, worktrees, terminal…) | ✅ | ✅ | ✅ |
-| Private repositories and commercial use | ✅ | ✅ | ✅ |
-| macOS, Windows and Linux | ✅ | ✅ | ✅ |
-| Hosting integrations: GitHub, GitLab, Bitbucket and Azure DevOps pull requests, issues, checks and CI/CD runs | | ✅ | ✅ |
-| **Nour**, the AI assistant, and AI drafting of commit messages and pull request descriptions | | ✅ | ✅ |
-| **Repo Insights**: commits, lines and files changed over time, worked out on your computer | | ✅ | ✅ |
-| Create organizations, invite members, manage roles and seats | | ✅ | ✅ |
+**GitTree is free to download and use today.** All current features are available at no charge for individuals and organizations, including private repositories and commercial work. That covers local Git, hosting integrations, CI/CD, Nour, AI drafting and Repo Insights.
 
-**GitTree is free for everyone right now.** Pro and organization seats carry a 100% discount: every Pro feature is open in the app with no account, no card and no trial, and nothing is charged or renewed. A free GitTree account is only needed to create organizations, invite members and share Team reports. The regular prices and the discount are on the [**Pricing page**](https://gittree.app/en/pricing).
+Paid billing for Pro and organization plans has yet to launch. You can use GitTree without starting a trial or entering payment details. A free GitTree account is required for shared organization features such as invitations, Team reports and shared change records.
+
+See the [official pricing page](https://gittree.app/en/pricing) for plan information and billing updates.
+
+## What's new in GitTree 3
+
+[GitTree 3.0.3](https://github.com/git-tree-app/gittree/releases/tag/v3.0.3), published November 13, 2026, makes Nour, hosting integrations and Repo Insights available to guests and moves bug reports and support requests to GitHub. The 3.x releases also added these workflows.
+
+| Workflow | What you can do |
+|---|---|
+| **Workspaces and Attention** | Resume a worktree where you left off. See failing pipelines, pending approvals and unpublished work across your checkouts. |
+| **Stacked branches and pull requests** | Split commits into reviewable branches, restack them when a base changes and submit linked pull requests on supported providers. |
+| **CI fixes with Nour** | Inspect failure evidence, make a fix in a separate checkout and track the hosted result for the fix commit. |
+| **Deployments and change records** | Trace a deployment or container image back to a commit for supported environments. Save or export a pull request's review, checks and merge evidence. |
+| **File editing and recovery** | Edit files in tabs that follow disk changes. Recover lost commits in **Lost & Found** and compare a branch before and after rewriting it in **What Changed**. |
+
+See all versions on [GitHub Releases](https://github.com/git-tree-app/gittree/releases).
 
 ## Features
 
@@ -260,13 +268,14 @@ GitTree covers the commands developers use every day, plus the advanced ones you
 - **Multiple remotes** over HTTPS or SSH: add, edit, prune and remove.
 - **Shallow history**: work with shallow clones and fetch more history when you need it.
 
-### Pull requests, issues and CI/CD (Pro)
+### Pull requests, issues and CI/CD
 
-- **Connect your hosting accounts**: GitHub, GitLab, Bitbucket and Azure DevOps, in the cloud and self-hosted. Tokens are stored in your system keychain.
+- **Connect your hosting accounts** for GitHub, GitLab, Bitbucket and Azure DevOps. Self-hosted support varies by provider. Tokens are stored in your system keychain.
 - **Pull requests**: list, create, review, comment on and merge them, browse their changed files as a tree and see their checks, without leaving the app.
 - **Issues** for the open repository in the sidebar.
 - **CI/CD runs**: runs, jobs and live logs, re-run failed jobs, cancel, approve and dispatch workflows for supported providers.
 - **Browse, clone and publish** repositories from your accounts without copying a URL.
+- **Local pipeline runs** with `act` for GitHub Actions or `gitlab-ci-local` for GitLab CI. Install the runner you want to use, then prepare the command in GitTree.
 
 <p align="center">
   <img src=".github/assets/screenshots/pull-request.webp" alt="A GitHub pull request opened inside GitTree: its title, passing checks, approvals, reviewers and labels, the description and the conversation, with Edit, Review and Merge" width="85%">
@@ -276,21 +285,22 @@ GitTree covers the commands developers use every day, plus the advanced ones you
   <img src=".github/assets/screenshots/pipelines.webp" alt="A failed GitHub Actions run inside GitTree: its jobs with the failing cargo test step selected, and the job log opened on the failing test, with Re-run All Jobs, Explain Failure and Open on GitHub" width="85%">
 </p>
 
-### Nour, the AI assistant (Pro)
+### Nour, the AI assistant
 
 - **Ask about your repository**: its history, its code, what changed on a branch or whether your working changes look risky.
 - **Agent mode**: let Nour edit files and run commands in a repository you trust, with a snapshot before every turn so **Undo** can take it back.
 - **AI drafting**: commit messages and pull request descriptions drafted from your changes.
-- **Your own coding agent**: Nour runs the coding-agent CLI you already use (such as Claude Code, Codex or Gemini CLI) under that agent's own plan and terms. GitTree stores no AI key and sells no AI credits, and nothing is sent until you ask.
+- **Your own coding agent** works through the CLI you install, such as Claude Code, Codex, Gemini CLI or OpenCode. Your agent's sign-in, pricing and data handling are governed by its provider.
+- **Connected agents** let coding agents outside Nour use GitTree's local tools through MCP. Manage agent permissions and pause connected agents from the app.
 
 <p align="center">
   <img src=".github/assets/screenshots/nour.webp" alt="Nour, the AI assistant, docked beside the commit graph, answering what changed on the develop branch since main after reading the changed file" width="85%">
 </p>
 
-### Repo Insights (Pro)
+### Repo Insights
 
 - **See how a repository moves**: commits, lines and files changed over time, a weekly chart and contributors by name.
-- **Worked out on your computer** from the repository's local history: nothing is uploaded.
+- **Local analysis** uses your repository's Git history. You can preview and choose which reports to share with your organization.
 - **Honest numbers**: the report says what it leaves out, such as a shallow clone's missing history.
 - **Its own window**: open Insights next to your work, keep earlier reports, and export a report as CSV or JSON.
 
@@ -303,6 +313,7 @@ GitTree covers the commands developers use every day, plus the advanced ones you
 - **Command palette**: <kbd>⌘</kbd><kbd>⇧</kbd><kbd>P</kbd> / <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd> runs any command, jumps to a branch, finds a commit or opens a file.
 - **Rebindable shortcuts**: every command has a shortcut you can change.
 - **Built-in terminal** docked under the graph, opened at the repository root with your own shell and profile; the graph refreshes when the repository changes.
+- **Built-in file editor** with pinned tabs, multiple cursors, code folding and a prompt when an external edit conflicts with unsaved changes.
 - **Tabs and workspaces**: open many repositories in tabs and group them into workspaces; your session comes back as you left it.
 - **Custom commands**: add your own commands and scripts.
 
@@ -340,7 +351,7 @@ GitTree covers the commands developers use every day, plus the advanced ones you
 
 - **Searchable preferences**: find any setting by name, description or key, and reset it on its own.
 - **Themes**: dark, light and high-contrast, plus your own imported themes.
-- **Language**: English or Arabic, with a right-to-left layout in Arabic.
+- **Language**: switch between ten interface languages, including Arabic with a right-to-left layout.
 - **SSH and signing**: manage SSH keys and configure commit signing.
 - **External tools**: open diffs and merges in the tools you prefer.
 - **Profiles**: switch between identities (name, email, signing key) for work and personal projects.
@@ -361,9 +372,16 @@ GitTree covers the commands developers use every day, plus the advanced ones you
 ### macOS
 
 1. [Download the `.dmg`](https://gittree.app/api/download/macos): one universal app for Apple silicon and Intel.
-2. Open the downloaded `Git-Tree_<version>_universal.dmg`.
+2. Open the downloaded disk image.
 3. Drag **Git Tree** into **Applications**.
 4. Open **Git Tree** from Applications, Launchpad or Spotlight.
+
+You can also use the [official Homebrew tap](https://github.com/git-tree-app/homebrew-tap). Check [GitHub Releases](https://github.com/git-tree-app/gittree/releases/latest) for the latest direct download.
+
+```bash
+brew tap git-tree-app/tap
+brew install --cask open-git-tree
+```
 
 Releases are signed with an Apple Developer ID and notarized by Apple, so macOS opens them without a warning. To check the app yourself:
 
@@ -478,9 +496,7 @@ cd ~/Downloads && sha256sum -c --ignore-missing SHA256SUMS.txt
 ## Getting started
 
 1. **Install GitTree** and [Git](#install-git), then open the app.
-2. **Continue without an account, or sign in.** At the first launch choose **Continue with local Git (no account)** to start working at once, or **Sign in** (or **Create account**): your browser opens [gittree.app](https://gittree.app), where you continue with your email or a Git provider and confirm the sign-in. The browser hands you back to the app, which continues by itself. You can sign in later from the account button.
-   - Browser didn't come back? The website shows a one-time code: choose **Manually enter authentication code** in the app and paste it.
-   - Every Pro feature is open with or without an account while GitTree is free.
+2. **Start without an account.** Choose **Continue with local Git (no account)** at first launch. You can sign in any time from the account menu for shared organization features. If the browser cannot return to the app, choose **Manually enter authentication code** and paste the one-time code from the website.
 3. **Open a repository.** From the start page choose **Open** (a folder on your computer), **Clone** (from a URL or your connected accounts) or **Init** (a new repository). **Scan for Repositories** finds the ones you already have in a folder.
 4. **Find your way around.**
 
@@ -492,7 +508,7 @@ cd ~/Downloads && sha256sum -c --ignore-missing SHA256SUMS.txt
    | **Graph** (centre) | Branch and tag labels, the lanes and the commit messages; the *WIP* row on top holds your uncommitted changes |
    | **Inspector** (right) | The selected commit's details and changed files, or the staging area and commit message for the WIP row |
 
-5. **Connect a hosting account (Pro).** For a repository on GitHub, GitLab, Bitbucket or Azure DevOps, open **Preferences → Integrations** and connect the account once. The sidebar then lists the repository's pull requests and issues, and the CI/CD view its runs.
+5. **Connect a hosting account.** Open **Preferences → Integrations** and connect GitHub, GitLab, Bitbucket or Azure DevOps to see supported pull requests, issues and CI/CD runs for the repository.
 
 A step-by-step guide for every task is in the [GitTree docs](https://gittree.app/en/docs), and [GitTree Learn](https://gittree.app/en/tutorial) teaches Git itself with real GitTree workflows.
 
@@ -555,7 +571,7 @@ Resets, discards, branch deletions and rebases save a recoverable snapshot befor
 </details>
 
 <details>
-<summary><strong>Review pull requests and CI/CD runs (Pro)</strong></summary>
+<summary><strong>Review pull requests and CI/CD runs</strong></summary>
 
 1. Open **Preferences** (<kbd>⌘</kbd><kbd>,</kbd> / <kbd>Ctrl</kbd><kbd>,</kbd>) → **Integrations** and connect GitHub, GitLab, Bitbucket or Azure DevOps.
 2. Open a pull request from the sidebar to read its conversation, commits, files and checks; add review comments to lines, then approve, request changes or merge.
@@ -563,7 +579,7 @@ Resets, discards, branch deletions and rebases save a recoverable snapshot befor
 </details>
 
 <details>
-<summary><strong>Ask Nour (Pro)</strong></summary>
+<summary><strong>Ask Nour</strong></summary>
 
 1. Install the coding-agent CLI you want Nour to use (for example Claude Code, Codex or Gemini CLI) and sign in to it.
 2. Choose **Nour** in the toolbar, pick the agent, and ask a question in **Ask** mode, or switch to **Agent** to let it make changes in a trusted repository.
@@ -603,20 +619,20 @@ Resets, discards, branch deletions and rebases save a recoverable snapshot befor
 | Stage / unstage the selected files | <kbd>S</kbd> / <kbd>U</kbd> | <kbd>S</kbd> / <kbd>U</kbd> |
 | Commit | <kbd>⌘</kbd><kbd>Enter</kbd> | <kbd>Ctrl</kbd><kbd>Enter</kbd> |
 | Next / previous change in a diff | <kbd>F7</kbd> / <kbd>⇧</kbd><kbd>F7</kbd> | <kbd>F7</kbd> / <kbd>Shift</kbd><kbd>F7</kbd> |
-| CI/CD runs (Pro) | <kbd>⌥</kbd><kbd>P</kbd> | <kbd>Alt</kbd><kbd>P</kbd> |
-| Repo Insights (Pro) | <kbd>⌥</kbd><kbd>I</kbd> | <kbd>Alt</kbd><kbd>I</kbd> |
+| CI/CD runs | <kbd>⌥</kbd><kbd>P</kbd> | <kbd>Alt</kbd><kbd>P</kbd> |
+| Repo Insights | <kbd>⌥</kbd><kbd>I</kbd> | <kbd>Alt</kbd><kbd>I</kbd> |
 | Toggle sidebar / inspector | <kbd>⌘</kbd><kbd>J</kbd> / <kbd>⌘</kbd><kbd>K</kbd> | <kbd>Ctrl</kbd><kbd>J</kbd> / <kbd>Ctrl</kbd><kbd>K</kbd> |
 | Toggle the drawer | <kbd>⌥</kbd><kbd>T</kbd> | <kbd>Alt</kbd><kbd>T</kbd> |
 | Zoom in / out / reset | <kbd>⌘</kbd><kbd>=</kbd> / <kbd>⌘</kbd><kbd>-</kbd> / <kbd>⌘</kbd><kbd>0</kbd> | <kbd>Ctrl</kbd><kbd>=</kbd> / <kbd>Ctrl</kbd><kbd>-</kbd> / <kbd>Ctrl</kbd><kbd>0</kbd> |
 
 ## Your GitTree account
 
-A **GitTree account** is free and optional: local Git and every Pro feature need none. You need one for organizations, invitations and Team reports. You create it on the website with your email or a Git provider, and you manage it there.
+A **GitTree account** is free. Create one with your email or a Git provider to manage organizations, accept invitations, share Team reports or share saved change records.
 
 | Page | What you can do |
 |---|---|
-| [Dashboard](https://gittree.app/en/dashboard) | Overview, your plan, download links and quick links |
-| [Organizations](https://gittree.app/en/dashboard/organizations) | Create organizations (Pro), invite members by email, GitHub username or link, manage roles and seats, accept invitations |
+| [Dashboard](https://gittree.app/en/dashboard) | Account overview, organizations and downloads |
+| [Organizations](https://gittree.app/en/dashboard/organizations) | Create organizations, invite members, manage roles and accept invitations |
 | [Support](https://gittree.app/en/support) | Help, and the GitHub forms for bugs and questions |
 | [Account settings](https://gittree.app/en/dashboard/settings) | Account type (individual or organization), sign out, **delete your account** |
 
@@ -624,9 +640,9 @@ What the account stores, and what it doesn't, is spelled out in the [Privacy pol
 
 ## Privacy and security
 
-- **Usage analytics you can switch off.** Official builds send which screens and commands are used, with masked session recordings, never repository names, paths, branches, commit messages, file contents or credentials. **Preferences → General → Share usage analytics** turns it off.
-- **Your repositories stay local.** GitTree has no cloud copy of your code. With default settings the app talks only to the Git remotes you fetch from and push to, the hosting accounts you connect, an update check you can switch off, and GitTree's servers for sign-in and for this computer's trial and plan check. For that check the app sends the operating system and its version, the processor architecture, the app version and a hashed device ID.
-- **AI only when you ask.** When you ask Nour something or draft a message with AI, what you send goes to the coding-agent CLI you picked, and only then.
+- **Local Git.** GitTree works on the checkout on your computer. Network features include fetch and push, connected hosting accounts, app updates, installation registration and optional account sign-in.
+- **Diagnostic and usage data.** Installation registration includes your app and OS versions, processor architecture and a hashed device identifier. Official builds also collect usage analytics and use masked session recordings. See the [Privacy Policy](https://gittree.app/en/privacy) for details.
+- **AI requests.** Nour passes your request and relevant context to the coding-agent CLI you choose. That agent's data handling applies.
 - **Secrets live only in your OS keychain**: the macOS Keychain, the Windows Credential Manager or the Linux Secret Service (GNOME Keyring, KeePassXC), never in files, logs or URLs.
 - **Safe by design.** Snapshots before destructive operations, Undo and Redo, `--force-with-lease`, Cancel as the default in dangerous dialogs, and untrusted repositories can't run hooks.
 - **Hands off your setup.** GitTree never edits your Git config, a repository or `~/.ssh` without an explicit action from you.
@@ -678,8 +694,8 @@ If GitTree cannot install it for you, it opens the installer so you can finish b
 | Linux: the AppImage doesn't start | Install FUSE (`sudo apt install fuse3`) and keep the file in a folder only you can write to. |
 | The download button opens the Releases page instead of downloading | No installer for your platform is published yet, or GitHub couldn't be reached: pick the file from the release's **Assets** list. |
 | Windows SmartScreen warning | The direct EXE is unsigned. Use the [Microsoft Store edition](https://apps.microsoft.com/detail/9pc5d11j0w5j) (or `winget install --id 9PC5D11J0W5J --source msstore`) or ask your IT administrator. A checksum verifies integrity, not the publisher. |
-| A remote asks for credentials every time | Set up an SSH key in **Preferences**, or connect the account in **Preferences → Integrations** (Pro); secrets are kept in your keychain. |
-| A Pro feature is locked | It shows that it is part of GitTree Pro where you would use it; see [Plans](#plans) and the [Pricing page](https://gittree.app/en/pricing). |
+| A remote asks for credentials every time | Set up an SSH key in **Preferences**, or connect the account in **Preferences → Integrations**. Secrets are kept in your keychain. |
+| An older version asks you to upgrade your plan | Install the [latest release](https://github.com/git-tree-app/gittree/releases/latest). Current desktop features are free. |
 | GitTree crashed or closed unexpectedly | Open **Crash Reports…** from the command palette, read the saved report, and post it with the [crash report form](https://github.com/git-tree-app/gittree/issues/new?template=crash_report.yml). |
 | Something else | Choose **Report a Bug** in the app, or use the [bug report form](https://github.com/git-tree-app/gittree/issues/new?template=bug_report.yml), with your GitTree version (bottom-right of the window), your OS version and the steps to reproduce. |
 
@@ -694,19 +710,19 @@ A desktop Git client (a Git GUI) for macOS, Windows and Linux. It shows your rep
 <details>
 <summary><strong>Is it free?</strong></summary>
 
-The Free plan covers every local Git feature, for private repositories and commercial use, on macOS, Windows and Linux. GitTree Pro adds hosting integrations, CI/CD, Nour and AI drafting, Repo Insights and organizations, and is 100% off right now, so it costs nothing. See the [Pricing page](https://gittree.app/en/pricing).
+Yes. All current GitTree features are free, including private repositories, commercial use, hosting integrations, CI/CD, Nour and Repo Insights. Paid billing has yet to launch. See [Pricing](#pricing).
 </details>
 
 <details>
 <summary><strong>Do I need an account?</strong></summary>
 
-No, not for local Git. The Free plan covers every local Git feature without signing in, for private repositories and commercial use. Pro features need no account either while GitTree is free. A free GitTree account (your email or a Git provider) is needed only for organizations, invitations and Team reports. Your repositories and code never leave your computer either way.
+You can use the desktop client as a guest. A free GitTree account gives you access to shared organization features. Sign in to your hosting provider or coding agent when you want to use that integration.
 </details>
 
 <details>
 <summary><strong>Does GitTree collect any data?</strong></summary>
 
-There is no cloud copy of your code, and repository names, paths, branches, commit messages, file contents and credentials are never collected. So that hosting integrations work without an account, the app registers the computer with the operating system and its version, the processor architecture, the app version and a hashed device ID. Official builds also send usage analytics and masked session recordings (which screens and commands are used, never repository content), tied to that hashed device ID until you sign in and to your account afterwards; **Preferences → General → Share usage analytics** turns them off. Your account stores only what the [Privacy policy](https://gittree.app/en/privacy) lists.
+GitTree registers the installation and official builds collect usage analytics. Your Git checkout is stored on your computer. See [Privacy and security](#privacy-and-security) for how network features and coding agents handle data.
 </details>
 
 <details>
@@ -724,7 +740,7 @@ Yes, with the same features as on macOS and Windows: a `.deb` package for Ubuntu
 <details>
 <summary><strong>Does it work with GitHub, GitLab, Bitbucket and Azure DevOps?</strong></summary>
 
-It works with any Git remote over HTTPS or SSH on every plan. With Pro you can also connect GitHub, GitLab, Bitbucket and Azure DevOps accounts, cloud or self-hosted, to browse and clone repositories and to work with pull requests, issues and CI/CD runs inside the app.
+Yes. Use standard Git remotes over HTTPS or SSH. Connect GitHub, GitLab, Bitbucket or Azure DevOps for in-app pull requests, issues and CI/CD. Available actions vary by provider and your permissions.
 </details>
 
 <details>
@@ -758,7 +774,7 @@ No. GitTree is closed-source software. This repository hosts its releases, publi
 
 ## About GitTree
 
-GitTree is made and sold by [**Kodmora**](https://kodmora.com), a software house in Cairo, Egypt. More on the [About page](https://gittree.app/en/about); business contact details are on the [Contact page](https://gittree.app/en/contact).
+GitTree is developed by [**Kodmora**](https://kodmora.com), a software house in Cairo, Egypt. See [About GitTree](https://gittree.app/en/about) and [Contact](https://gittree.app/en/contact).
 
 ## Legal
 
@@ -772,22 +788,24 @@ Git and the Git logo are trademarks of the Software Freedom Conservancy. GitHub,
 
 <div dir="rtl">
 
-**GitTree** عميل Git مرئي لأنظمة macOS وWindows وLinux: رسم بياني واضح للإيداعات، وتجهيز الملفات حتى مستوى السطر، ومحرر تعارضات ثلاثي، ودمج وإعادة تأسيس مع إمكانية التراجع. مستودعاتك تبقى على جهازك، ولا يرسل التطبيق أي بيانات استخدام. التطبيق والموقع والدروس متاحة بالعربية مع واجهة من اليمين إلى اليسار.
+**GitTree** عميل Git مرئي ومجاني لأنظمة macOS وWindows وLinux. يعرض سجل الإيداعات والفروع في رسم بياني، ويتيح تجهيز التغييرات سطرًا بسطر، وإعادة التأسيس التفاعلية، وحل التعارضات بمحرّر ثلاثي، والتراجع عن العمليات المدعومة. يعمل Git على نسخة المستودع الموجودة على جهازك. يدعم التطبيق عشر لغات، منها العربية بواجهة من اليمين إلى اليسار.
 
-- **الخطة المجانية** تشمل كل ميزات Git المحلية، للمستودعات الخاصة والاستخدام التجاري. **GitTree Pro** يضيف طلبات الدمج والمشكلات وتشغيلات CI/CD من GitHub وGitLab وBitbucket وAzure DevOps، ونور مساعد الذكاء الاصطناعي، وRepo Insights، وإنشاء المؤسسات. الأسعار والعروض في [صفحة الأسعار](https://gittree.app/ar/pricing).
+- **مجاني للجميع حاليًا.** جميع ميزات GitTree الحالية متاحة مجانًا، بما فيها المستودعات الخاصة والاستخدام التجاري وتكاملات GitHub وGitLab وBitbucket وAzure DevOps لمراجعة طلبات الدمج ومتابعة CI/CD، إضافةً إلى مساعد «نور» وإحصاءات المستودع. لم يبدأ تحصيل رسوم خطط Pro والمؤسسات بعد. تابع التحديثات في [صفحة الأسعار](https://gittree.app/ar/pricing).
+- **الجديد في GitTree 3.** استأنف عملك في مساحات العمل، ونظّم التغييرات في فروع مترابطة للمراجعة، وتتبّع نتائج CI وعمليات النشر، واحفظ سجلات المراجعة والفحوصات. يمكنك استعادة الإيداعات المفقودة من **Lost & Found**. [أحدث إصدار](https://github.com/git-tree-app/gittree/releases/latest).
 - **تنزيل لنظام macOS** (macOS 13 أو أحدث، معالجات Apple وIntel): [gittree.app/api/download/macos](https://gittree.app/api/download/macos)
+- **التثبيت على macOS عبر Homebrew:** أضف [مستودع GitTree الرسمي](https://github.com/git-tree-app/homebrew-tap) بالأمر `brew tap git-tree-app/tap`، ثم نفّذ `brew install --cask open-git-tree`.
 - **تنزيل لنظام Windows** (Windows 10 ‏22H2 أو Windows 11، ‏64 بت): [Microsoft Store — الخيار الموصى به](https://apps.microsoft.com/detail/9pc5d11j0w5j)، أو [ملف EXE اختياري](https://gittree.app/api/download/windows). ملف EXE غير موقّع رقميًا وقد يعرض Windows تحذيرًا أمنيًا؛ اعتماد المتجر يخص نسخة المتجر فقط.
 - **التثبيت على Windows من سطر الأوامر:** الأمر `winget install --id 9PC5D11J0W5J --source msstore` يثبّت نسخة المتجر نفسها الموقّعة من Microsoft، بدون تحذير SmartScreen.
 - **التثبيت على Linux بأمر واحد (الطريقة الموصى بها):** الصق `curl -fsSL https://gittree.app/install.sh | bash` في الطرفية (أو `wget -qO- https://gittree.app/install.sh | bash` إن لم يكن curl مثبّتًا). ينزّل الأمر أحدث إصدار ويتحقق منه عبر `SHA256SUMS.txt` ويثبّته ثم يفتح GitTree: حزمة `.deb` على Ubuntu وDebian (ويضيف مستودع Git PPA على Ubuntu 22.04 وLinux Mint 21)، وملف AppImage على التوزيعات الأخرى.
 - **تنزيل لنظام Linux** (Ubuntu 22.04 أو أحدث، أو Debian 12 أو أحدث، ‏64 بت x86_64): حزمة `.deb` من [gittree.app/api/download/linux](https://gittree.app/api/download/linux) أو ملف AppImage المحمول من [gittree.app/api/download/linux-appimage](https://gittree.app/api/download/linux-appimage)
 - يحتاج التطبيق إلى Git بالإصدار 2.39 أو أحدث مثبتًا على جهازك (في Ubuntu 22.04 أضِف أولًا مستودع Git PPA؛ راجع قسم التثبيت على Linux).
-- **GitTree مجاني للجميع الآن:** يحمل Pro ومقاعد المؤسسات خصمًا 100٪، فكل ميزات Pro مفتوحة في التطبيق دون حساب ودون بطاقة ودون تجربة، ولا يُخصم أي مبلغ. حساب GitTree المجاني (بالبريد الإلكتروني أو بمزوّد Git) مطلوب فقط لإنشاء المؤسسات ودعوة الأعضاء ومشاركة تقارير الفريق.
+- **الحساب اختياري.** يمكنك استخدام التطبيق دون حساب GitTree أو بطاقة دفع. سجّل الدخول بحساب GitTree مجاني لإنشاء مؤسسة ودعوة الأعضاء ومشاركة تقارير الفريق وسجلات التغييرات.
 - **ضمانات البنية والأمان:**
   - **Git المثبّت على نظامك، وليس libgit2:** كل عملية تستخدم Git الموجود على جهازك (الإصدار 2.39 أو أحدث)، فتعمل إعداداتك ووكلاء SSH وGPG والـ hooks كما في الطرفية، وكل أمر ينفّذه GitTree يظهر في **سجل النشاط (Activity Log)**.
   - **لقطات استرداد قبل العمليات الخطرة:** قبل reset أو rebase أو squash أو تجاهل التغييرات أو حذف فرع، يحفظ GitTree الحالة السابقة في مراجع مخفية (`refs/ogt/trash/*`)، فيعكس **Undo** و**Redo** العملية، ويعرض **Lost & Found** الإيداعات التي يمكنك استعادتها.
   - **سلسلة مفاتيح النظام فقط:** الرموز والجلسات تُحفظ في Keychain على macOS أو Credential Manager على Windows أو Secret Service على Linux، بدون أي حفظ كنص صريح.
-  - **وكيل الذكاء الاصطناعي الخاص بك (نور، Pro):** يشغّل نور أداة سطر الأوامر التي تستخدمها (مثل `claude` أو `codex` أو `gemini` أو `opencode`) على جهازك، مع صلاحيات يفرضها Rust ولقطة قبل كل دور، ولا يخزّن GitTree أي مفتاح AI ولا نسخة من الكود على خوادمه.
-  - **حسابك محلي أولًا:** المستودعات والكود والفروقات ومفاتيح SSH لا تغادر جهازك أبدًا.
+  - **وكيل الذكاء الاصطناعي الخاص بك.** يشغّل «نور» أداة سطر الأوامر التي تختارها، مثل `claude` أو `codex`، ويحفظ لقطة استرداد قبل كل جولة. تسري شروط مزوّد الوكيل على معالجة طلباتك.
+  - **الخصوصية.** تعمل عمليات Git على النسخة المحلية. تسجّل النسخ الرسمية بيانات التثبيت وتحليلات الاستخدام وتخفي المحتوى الحساس في تسجيلات الجلسات. راجع [سياسة الخصوصية](https://gittree.app/ar/privacy).
 - الموقع بالعربية: [gittree.app/ar](https://gittree.app/ar) · الميزات: [gittree.app/ar/features](https://gittree.app/ar/features)
 - التحديثات: نسخة المتجر تتحدّث عبر Microsoft Store. أما نسخة التحميل المباشر فيحدّثها التطبيق نفسه. عند فتحه يتحقق من الإصدارات المنشورة هنا، ويظهر شريط أعلى النافذة عند توفر إصدار أحدث: اضغط **Download** للتنزيل (مع التحقق من التوقيع وSHA-256)، ثم **Install and restart**.
 - للإبلاغ عن مشكلة: اختر **Report a Bug** في التطبيق لفتح نموذج البلاغ هنا على GitHub، أو [افتح Issue](https://github.com/git-tree-app/gittree/issues/new/choose). وللأسئلة عن الحساب أو المؤسسات استخدم [نموذج المساعدة](https://github.com/git-tree-app/gittree/issues/new?template=support_request.yml).
